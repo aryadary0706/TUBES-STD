@@ -1,19 +1,35 @@
 #include "DataBuku.h"
 
 void createListPenulis(ListPenulis &P){
+    /*
+    (I.S -
+    F.S : Terdefinisikan ListPenulis P dengan First = NULL)
+    */
     P.First = NULL;
 }
 
 void createListBuku(ListBuku &B){
+    /*
+    (I.S -
+    F.S : Terdefinisikan ListBuku B dengan First = NULL)
+    */
     B.First = NULL;
     B.Last = NULL;
 }
 
 void createListRelasi(ListRelasi &R){
+    /*
+    (I.S -
+    F.S : Terdefinisikan ListRelasi R dengan First = NULL)
+    */
     R.First = NULL;
 }
 
 void InsertBuku(ListBuku &B, AdrBuku Newbook){
+       /*
+    (I.S : Terdefinisi ListBuku B yang bisa saja kosong dan AdrBuku NewBuku yang akan dimasukkan ke dalam list
+    F.S : NewBuku masuk ke dalam B)
+    */
     if (B.First == NULL && B.Last == NULL){
         B.First = Newbook;
         B.Last = Newbook;
@@ -25,6 +41,10 @@ void InsertBuku(ListBuku &B, AdrBuku Newbook){
 }
 
 void InsertPenulis(ListPenulis &P, AdrPenulis Writer){
+       /*
+    (I.S : Terdefinisi ListBuku B dan AdrPenulis Writer yang akan dimasukkan ke dalam list
+    F.S : Writer masuk ke dalam P)
+    */
     if (P.First = NULL){
         P.First = Writer;
     }else{
@@ -37,6 +57,11 @@ void InsertPenulis(ListPenulis &P, AdrPenulis Writer){
 }
 
 void AddBuku(ListBuku &B){
+       /*
+    (I.S : Terdefinisi ListBuku B yang bisa saja kosong
+    proses : Mengalokasikan AdrBuku book. Memasukan elemen dari book dengan input dari user. Setelahnya, dilanjutkan proses InsertBuku untuk memasukkan ADrBuku book ke dalam ListBuku B
+    F.S : alamat buku masuk ke dalam ListBuku B)
+    */
     string judul, penerbit, Editor;
     int tahunTerbit, cetakan, ID;
     AdrBuku book = new ElmBuku;
@@ -65,11 +90,18 @@ void AddBuku(ListBuku &B){
     book->InfoBuku.Tahunterbit = tahunTerbit;
     book->InfoBuku.Cetakan = cetakan;
     book->InfoBuku.Editor = Editor;
+    book->next = NULL;
+    book->prev = NULL;
 
     InsertBuku(B, book);
 }
 
 void AddPenulis(ListPenulis &P){
+    /*
+    (I.S : Terdefinisi ListBuku P yang bisa saja kosong
+    proses : Mengalokasikan AdrPenulis Pen. Memasukan elemen dari Pen dengan input dari user. Setelahnya, dilanjutkan proses InsertPenulis untuk memasukkan AdrPenulis book ke dalam ListPenulis P
+    F.S : alamat Pen masuk ke dalam ListPenulis P)
+    */
     string nama, asal, namapena;
     int ID;
 
@@ -91,11 +123,15 @@ void AddPenulis(ListPenulis &P){
     Pen->InfoPen.nama = nama;
     Pen->InfoPen.asal = asal;
     Pen->InfoPen.namaPena = namapena;
+    Pen->next = NULL;
 
     InsertPenulis(P, Pen);
 }
 
 AdrBuku FindBukuByJudul(ListBuku B, string judul){
+    /*
+    Mengembalikan nilai AdrBuku di dalam ListBuku B dengan infoBuku.judul yang sama dengan judul. NULL jika Buku tidak ada daam ListBuku B
+    */
     AdrBuku search = B.First;
     AdrBuku found = NULL;
     while (search != NULL && found == NULL){
@@ -108,6 +144,9 @@ AdrBuku FindBukuByJudul(ListBuku B, string judul){
 }
 
 AdrPenulis FindPenulisByName(ListPenulis P, string Nama){
+    /*
+    Mengembalikan nilai AdrPenulis di dalam ListPenulis P dengan (infoPen.Nama == Nama) atau (infoPen.NamaPena == Nama). NULL jika Buku tidak ada daam ListBuku B
+    */
     AdrPenulis search = P.First;
     AdrPenulis found = NULL;
     while (search != NULL && found == NULL){
@@ -120,6 +159,10 @@ AdrPenulis FindPenulisByName(ListPenulis P, string Nama){
 }
 
 void InsertRelasi(ListRelasi &R, AdrRelasi NewRelasi){
+    /*
+    (I.S : Terdefinisi ListRelasi R yang bisa saja kosong dan NewRelasi adalah alamat relasi yang akan dimasukkan
+    F.S : alamat Pen masuk ke dalam ListPenulis P)
+    */
     if (R.First == NULL){
         R.First = NewRelasi;
     }else{
@@ -132,6 +175,11 @@ void InsertRelasi(ListRelasi &R, AdrRelasi NewRelasi){
 }
 
 void AddRelasi(ListRelasi &R, string JudulBuku, ListBuku B, ListPenulis P, string NamaPenulis){
+    /*
+    (I.S : Terdefinisi ListBuku P yang kosong, judulBuku dan NamaPenulis yang akan direlasikan, ListBuku B dan ListPenulis P
+    proses : Mengalokasikan AdrPenulis Rel. Memasukan elemen dari Rel dengan fungsi FindBukuByJudul() dan FindPenulisByName(). Setelahnya, dilanjutkan proses Relasi() untuk memasukkan Rel ke dalam ListRelasi R
+    F.S : alamat Rel masuk ke dalam ListRelasi R)
+    */
     AdrBuku P_Buku = FindBukuByJudul(B, JudulBuku);
     AdrPenulis P_Writer = FindPenulisByName(P, NamaPenulis);
     if (P_Buku != NULL && P_Writer != NULL){
@@ -248,6 +296,19 @@ void PrintBukuBasedPenulis(ListRelasi R, string NamaPenulis){
            }
 }
 
-
-
-
+void PrintPenulisOnBuku(ListRelasi R, string judulBuku){
+    AdrRelasi RP = R.First;
+    AdrPenulis PfromR;
+    while (RP != NULL){
+         cout<<"Informasi Penulis yang menulis buku "<<judulBuku<<endl;
+        if (RP->BR->InfoBuku.Judul == judulBuku ){
+            PfromR = RP->PR;
+            cout<<"==============================================="<<endl;
+            cout<<"ID Penulis: "<<PfromR->InfoPen.IDPenulis<<endl;
+            cout<<"Nama Penulis: "<<PfromR->InfoPen.nama<<endl;
+            cout<<"Nama Pena Penulis: "<<PfromR->InfoPen.namaPena<<endl;
+            cout<<"Asal Penulis: "<<PfromR->InfoPen.asal<<endl;
+             cout<<"==============================================="<<endl;
+        }
+    }
+}
