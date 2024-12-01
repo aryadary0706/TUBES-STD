@@ -19,7 +19,8 @@ int main() {
         cout << "5. Hapus Buku\n";
         cout << "6. Tampilkan Penulis (Ascending)\n";
         cout << "7. Tampilkan Penulis (Descending)\n";
-        cout << "8. Keluar\n";
+        cout << "8. Tampilkan Penulis yang Paling Aktif dan Tidak Aktif\n";
+        cout << "9. Keluar";
         cout << "Pilihan Anda: ";
         cin >> pilihan;
 
@@ -43,38 +44,39 @@ int main() {
                 break;
             }
             case 4: {
-                int IDPenulis;
+                string NamaPenulis;
                 cout << "Masukkan ID Penulis yang ingin dihapus: ";
-                cin >> IDPenulis;
-                HapusPenulis(P, R, IDPenulis);
+                cin >> NamaPenulis;
+                DeletePenulis(P, NamaPenulis);
                 break;
             }
             case 5: {
-                int IDBuku;
+                string JudulBuku;
                 cout << "Masukkan ID Buku yang ingin dihapus: ";
-                cin >> IDBuku;
-                HapusBuku(B, R, IDBuku);
+                cin >> JudulBuku;
+                DeleteBuku(B, JudulBuku);
                 break;
             }
             case 6: {
-                TampilkanPenulisSelectionSortAscending(P);
+                TampilkanPenulisSelectionSortAscending();
                 break;
             }
             case 7: {
-                TampilkanPenulisInsertionSortDescending(P);
+                TampilkanPenulisInsertionSortDescending();
                 break;
             }
             case 8: {
-                cout << "Terima kasih telah menggunakan program ini.\n";
+                EvaluasiPenulis();
                 break;
+            }case 9: {
+                cout<<"Terimakasih sudah menggunakan aplikasi ini.";
             }
             default: {
                 cout << "Pilihan tidak valid. Coba lagi.\n";
                 break;
             }
         }
-    } while (pilihan != 8);
+    } while (pilihan != 9);
 
     return 0;
 }
-
