@@ -193,74 +193,90 @@ void AddRelasi(ListRelasi &R, string JudulBuku, ListBuku B, ListPenulis P, strin
     }
 }
 
-void DeleteBuku(ListBuku &B, string BukuDihapus){
+void DeleteBuku(ListBuku &B, string BukuDihapus) {
     /*
     I.S: Terdefinisi ListBuku B yang bisa saja kosong dan string BukuDihapus adalah judul buku yang akan dihapus pada ListBuku
-    F.S: alamat dengan judul buku = BukuDihapus telah terhapus dari ListBuku
+    F.S: Alamat dengan judul buku = BukuDihapus telah terhapus dari ListBuku
     */
-    AdrBuku P;
-    AdrBuku temp1;
-    AdrBuku temp2;
-    P = FindBukuByJudul(B, BukuDihapus);
-    if (P != NULL){
-        if (P->next != NULL && P != B.First) {
-            temp1 = P->next;
-            temp2 = P->prev;
-            temp1->next = temp2;
-            temp2->prev = temp1;
-            P->next = NULL;
-            P->prev = NULL;
-            cout<<"Buku "<<P->InfoBuku.Judul<<" sudah dihapus dari data"<<endl;
-        }else if (P != NULL){
-            temp1 = P->prev;
-            P->prev = NULL;
-            temp1->next = NULL;
-            cout<<"Buku "<<P->InfoBuku.Judul<<" sudah dihapus dari data"<<endl;
-        }else{
-            cout<<"Buku "<<BukuDihapus<<" Tidak ditemukan"<<endl;
+    AdrBuku P = FindBukuByJudul(B, BukuDihapus);
+    if (P != NULL) {
+        // Jika hanya satu node di list
+        if (B.First == P && B.Last == P) {
+            B.First = NULL;
+            B.Last = NULL;
         }
+        // Jika node di awal list
+        else if (P == B.First) {
+            B.First = P->next;
+            B.First->prev = NULL;
+        }
+        // Jika node di akhir list
+        else if (P == B.Last) {
+            B.Last = P->prev;
+            B.Last->next = NULL;
+        }
+        // Jika node di tengah-tengah list
+        else {
+            P->prev->next = P->next;
+            P->next->prev = P->prev;
+        }
+        // Hapus node
+        P->next = NULL;
+        P->prev = NULL;
+        delete P;
+        cout << "Buku " << BukuDihapus << " sudah dihapus dari data.\n";
+    } else {
+        cout << "Buku " << BukuDihapus << " tidak ditemukan dalam data.\n";
     }
 }
 
-void DeletePenulis(ListPenulis &G, string PenulisDihapus){
+
+void DeletePenulis(ListPenulis &G, string PenulisDihapus) {
     /*
-    I.S: Terdefinisi ListPenulius P yang bisa saja kosong dan string PenulisDihapus yang merupakan nama penulis yang akan dihapus pada ListPenulis
-    F.S: alamat dengan nama penulis = PenulisDihapus atau nama pena = PenulisDihapus telah terhapus dari ListBuku
+    I.S: Terdefinisi ListPenulis G yang bisa saja kosong dan string PenulisDihapus yang merupakan nama penulis atau nama pena yang akan dihapus
+    F.S: Node dengan nama penulis atau nama pena = PenulisDihapus telah terhapus dari ListPenulis
     */
-    AdrPenulis P = G.First;
-    AdrPenulis temp1;
-    AdrPenulis temp2;
+    if (G.First == NULL) {
+        cout << "List penulis kosong. Tidak ada yang dapat dihapus.\n";
+        return;
+    }
 
-    while (P != NULL &&
-           P->next->InfoPen.nama == PenulisDihapus &&
-           P->next->InfoPen.namaPena == PenulisDihapus){
-                P= P->next;
-           }
-    if (P != NULL){
-        if (P->next != NULL){
-            temp1 = P->next;
-            temp2 = temp1->next;
-            P->next = temp2;
-            temp1->next = NULL;
-            cout<<"Data Penulis sudah dihapus"<<endl;
-        }else{
-            P->next = NULL;
+    AdrPenulis P = G.First;
+    AdrPenulis prev = NULL;
+
+    // Mencari node yang akan dihapus
+    while (P != NULL && P->InfoPen.nama != PenulisDihapus && P->InfoPen.namaPena != PenulisDihapus) {
+        prev = P;
+        P = P->next;
+    }
+
+    if (P != NULL) {
+        // Jika node yang dihapus adalah node pertama
+        if (P == G.First) {
+            G.First = P->next;
         }
+        // Jika node yang dihapus ada di tengah atau akhir
+        else {
+            prev->next = P->next;
+        }
+
+        // Menghapus node
+        P->next = NULL;
+        delete P;
+
+        cout << "Data penulis \"" << PenulisDihapus << "\" sudah dihapus dari list.\n";
+    } else {
+        cout << "Penulis \"" << PenulisDihapus << "\" tidak ditemukan dalam list.\n";
     }
 }
+
 
 void PrintBukuDanPenulis(ListRelasi R){
     /*
     I.S Terdefinisi ListRelasi R
-    F.S Ditampilkan Data dari Buku dan data penulis buku tersebut
+    F.S Ditampilkan Seluruh Data dari Buku dan data penulis buku tersebut
     */
     AdrRelasi P = R.First;
-    string BukuDicari;
-    cout<<"Masukkan buku yang ingin dicari: "<<endl;
-    cin>>BukuDicari;
-    while (P->BR->InfoBuku.Judul != BukuDicari && P != NULL){
-        P = P->next;
-    }
     AdrPenulis P_Penulis;
     AdrBuku P_Buku;
     if (P != NULL) {
@@ -284,6 +300,8 @@ void PrintBukuDanPenulis(ListRelasi R){
         cout<<"ID penulis: "<<P_Penulis->InfoPen.IDPenulis<<endl;
         cout<<"Asal penulis:"<<P_Penulis->InfoPen.asal<<endl;
         cout<<"==============================================="<<endl;
+
+        P = P->next;
     }else{
         cout<<"JUDUL BUKU TIDAK DITEMUKAN.";
     }
@@ -340,8 +358,14 @@ void EvaluasiPenulis(){
     */
 }
 
-void sortingBuku(){
+void TampilkanPenulisSelectionSortAscending(){
     /*
-    Menampilkan list parent secara terurut ascending/descending berdasarkan atribut tertentu.
+    Menampilkan data Penulis secara ascending
+    */
+}
+
+void TampilkanPenulisInsertionSortDescending(){
+    /*
+    Menampilkan data Penulis secara descending
     */
 }
