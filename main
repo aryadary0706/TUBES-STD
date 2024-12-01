@@ -1,9 +1,80 @@
 #include "DataBuku.h"
 
-using namespace std;
+int main() {
+    ListBuku B;
+    ListPenulis P;
+    ListRelasi R;
 
-int main()
-{
-    cout << "Hello world!" << endl;
+    createListBuku(B);
+    createListPenulis(P);
+    createListRelasi(R);
+
+    int pilihan;
+    do {
+        cout << "\n=== Menu Program ===\n";
+        cout << "1. Tambah Buku\n";
+        cout << "2. Tambah Penulis\n";
+        cout << "3. Tambah Relasi Buku-Penulis\n";
+        cout << "4. Hapus Penulis\n";
+        cout << "5. Hapus Buku\n";
+        cout << "6. Tampilkan Penulis (Ascending)\n";
+        cout << "7. Tampilkan Penulis (Descending)\n";
+        cout << "8. Keluar\n";
+        cout << "Pilihan Anda: ";
+        cin >> pilihan;
+
+        switch (pilihan) {
+            case 1: {
+                AddBuku(B);
+                break;
+            }
+            case 2: {
+                AddPenulis(P);
+                break;
+            }
+            case 3: {
+                string judul, namaPenulis;
+                cout << "Masukkan Judul Buku: ";
+                cin.ignore();
+                getline(cin, judul);
+                cout << "Masukkan Nama Penulis: ";
+                getline(cin, namaPenulis);
+                AddRelasi(R, judul, B, P, namaPenulis);
+                break;
+            }
+            case 4: {
+                int IDPenulis;
+                cout << "Masukkan ID Penulis yang ingin dihapus: ";
+                cin >> IDPenulis;
+                HapusPenulis(P, R, IDPenulis);
+                break;
+            }
+            case 5: {
+                int IDBuku;
+                cout << "Masukkan ID Buku yang ingin dihapus: ";
+                cin >> IDBuku;
+                HapusBuku(B, R, IDBuku);
+                break;
+            }
+            case 6: {
+                TampilkanPenulisSelectionSortAscending(P);
+                break;
+            }
+            case 7: {
+                TampilkanPenulisInsertionSortDescending(P);
+                break;
+            }
+            case 8: {
+                cout << "Terima kasih telah menggunakan program ini.\n";
+                break;
+            }
+            default: {
+                cout << "Pilihan tidak valid. Coba lagi.\n";
+                break;
+            }
+        }
+    } while (pilihan != 8);
+
     return 0;
 }
+
