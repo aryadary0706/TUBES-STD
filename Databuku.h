@@ -77,6 +77,7 @@ void PrintBukuDanPenulis(ListRelasi R);
 void PrintBukuBasedPenulis(ListRelasi R, string NamaPenulis);
 void PrintPenulisOnBuku(ListRelasi R, string judulBuku);
 void EvaluasiPenulis();
-void sortingBuku();
+void TampilkanPenulisSelectionSortAscending();
+void TampilkanPenulisInsertionSortDescending();
 
 #endif // DATABUKU_H_INCLUDED
