@@ -71,7 +71,7 @@ void AddBuku(ListBuku &B){
     cout<<"Masukkan Judul Buku:";
     cin>>judul;
     cout<<endl;
-    cout<<"Masukkan nama penerbit";
+    cout<<"Masukkan nama penerbit:";
     cin>>penerbit;
     cout<<endl;
     cout<<"Masukkan Tahun Terbit Buku:";
@@ -112,7 +112,7 @@ void AddPenulis(ListPenulis &P){
     cout<<"Masukkan Nama asli Penulis:";
     cin>>nama;
     cout<<endl;
-    cout<<"Masukkan Asal penulis";
+    cout<<"Masukkan Asal penulis:";
     cin>>asal;
     cout<<endl;
     cout<<"Masukkan Nama pena penulis('-' jika tidak ada):";
@@ -188,85 +188,75 @@ void AddRelasi(ListRelasi &R, string JudulBuku, ListBuku B, ListPenulis P, strin
         Rel->PR = P_Writer;
         Rel->next = NULL;
         InsertRelasi(R, Rel);
+        cout<<"Relasi antara Buku-Penulis Sudah Ditambahkan.";
     }else{
         cout<<endl<<"Judul Buku atau Nama Penulis tidak ditemukan."<<endl;
     }
 }
 
-void DeleteBuku(ListBuku &B, string BukuDihapus) {
-    /*
-    I.S: Terdefinisi ListBuku B yang bisa saja kosong dan string BukuDihapus adalah judul buku yang akan dihapus pada ListBuku
-    F.S: Alamat dengan judul buku = BukuDihapus telah terhapus dari ListBuku
-    */
-    AdrBuku P = FindBukuByJudul(B, BukuDihapus);
-    if (P != NULL) {
-        // Jika hanya satu node di list
-        if (B.First == P && B.Last == P) {
-            B.First = NULL;
-            B.Last = NULL;
+void HapusBuku(ListBuku &B, ListRelasi &R, int IDBuku) {
+    AdrBuku curr = B.First;
+    AdrBuku prev = NULL;
+    while (curr != NULL && curr->InfoBuku.IDBuku != IDBuku) {
+        prev = curr;
+        curr = curr->next;
+    }
+
+    if (curr != NULL) {
+        AdrRelasi relCurr = R.First;
+        while (relCurr != NULL) {
+            if (relCurr->BR == curr) {
+                relCurr->BR = NULL;
+            }
+            relCurr = relCurr->next;
         }
-        // Jika node di awal list
-        else if (P == B.First) {
-            B.First = P->next;
+
+        if (curr == B.First && curr == B.Last) {
+            B.First = B.Last = NULL;
+        } else if (curr == B.First) {
+            B.First = curr->next;
             B.First->prev = NULL;
-        }
-        // Jika node di akhir list
-        else if (P == B.Last) {
-            B.Last = P->prev;
+        } else if (curr == B.Last) {
+            B.Last = curr->prev;
             B.Last->next = NULL;
+        } else {
+            curr->prev->next = curr->next;
+            curr->next->prev = curr->prev;
         }
-        // Jika node di tengah-tengah list
-        else {
-            P->prev->next = P->next;
-            P->next->prev = P->prev;
-        }
-        // Hapus node
-        P->next = NULL;
-        P->prev = NULL;
-        delete P;
-        cout << "Buku " << BukuDihapus << " sudah dihapus dari data.\n";
+        curr->next = curr->prev = NULL;
+        cout << "Buku berhasil dihapus dari list.\n";
     } else {
-        cout << "Buku " << BukuDihapus << " tidak ditemukan dalam data.\n";
+        cout << "Buku tidak ditemukan.\n";
     }
 }
 
 
-void DeletePenulis(ListPenulis &G, string PenulisDihapus) {
-    /*
-    I.S: Terdefinisi ListPenulis G yang bisa saja kosong dan string PenulisDihapus yang merupakan nama penulis atau nama pena yang akan dihapus
-    F.S: Node dengan nama penulis atau nama pena = PenulisDihapus telah terhapus dari ListPenulis
-    */
-    if (G.First == NULL) {
-        cout << "List penulis kosong. Tidak ada yang dapat dihapus.\n";
-        return;
-    }
-
-    AdrPenulis P = G.First;
+void HapusPenulis(ListPenulis &P, ListRelasi &R, int IDPenulis) {
+    AdrPenulis curr = P.First;
     AdrPenulis prev = NULL;
-
-    // Mencari node yang akan dihapus
-    while (P != NULL && P->InfoPen.nama != PenulisDihapus && P->InfoPen.namaPena != PenulisDihapus) {
-        prev = P;
-        P = P->next;
+    while (curr != NULL && curr->InfoPen.IDPenulis != IDPenulis) {
+        prev = curr;
+        curr = curr->next;
     }
 
-    if (P != NULL) {
-        // Jika node yang dihapus adalah node pertama
-        if (P == G.First) {
-            G.First = P->next;
-        }
-        // Jika node yang dihapus ada di tengah atau akhir
-        else {
-            prev->next = P->next;
+    if (curr != NULL) {
+        AdrRelasi relCurr = R.First;
+        while (relCurr != NULL) {
+            if (relCurr->PR == curr) {
+                relCurr->PR = NULL;
+            }
+            relCurr = relCurr->next;
         }
 
-        // Menghapus node
-        P->next = NULL;
-        delete P;
-
-        cout << "Data penulis \"" << PenulisDihapus << "\" sudah dihapus dari list.\n";
+        if (prev == NULL) {
+            P.First = curr->next;
+        } else {
+            prev->next = curr->next;
+        }
+        curr->next = NULL;
+        cout << "Penulis berhasil dihapus dari list.\n";
     } else {
-        cout << "Penulis \"" << PenulisDihapus << "\" tidak ditemukan dalam list.\n";
+        cout << "Penulis tidak ditemukan.\n";
     }
 }
 
@@ -280,6 +270,7 @@ void PrintBukuDanPenulis(ListRelasi R){
     AdrPenulis P_Penulis;
     AdrBuku P_Buku;
     if (P != NULL) {
+        while (P != NULL){
         P_Buku = P->BR;
         P_Penulis = P->PR;
         cout<<"==============================================="<<endl;
@@ -300,8 +291,8 @@ void PrintBukuDanPenulis(ListRelasi R){
         cout<<"ID penulis: "<<P_Penulis->InfoPen.IDPenulis<<endl;
         cout<<"Asal penulis:"<<P_Penulis->InfoPen.asal<<endl;
         cout<<"==============================================="<<endl;
-
         P = P->next;
+        }
     }else{
         cout<<"JUDUL BUKU TIDAK DITEMUKAN.";
     }
@@ -352,20 +343,329 @@ void PrintPenulisOnBuku(ListRelasi R, string judulBuku){
     }
 }
 
-void EvaluasiPenulis(){
+void HapusRelasi(ListRelasi &R, AdrRelasi AR){
+    if (AR == R.First && AR->next == NULL){
+        AR = NULL;
+        cout<<"Relasi sudah dihapus\n";
+    }else if (AR->next == NULL){
+        AdrRelasi temp = R.First;
+        while (temp ->next != NULL){
+            temp = temp->next;
+        }
+        temp->next = NULL;
+    }else{
+        AdrRelasi temp = R.First;
+        while (temp ->next != NULL){
+            temp = temp->next;
+        }
+        temp->next = AR->next;
+        AR->next = NULL;
+    }
+}
+
+void EvaluasiPenulis(ListPenulis P, ListRelasi R){
     /*
     Menampilkan data penulis yang paling aktif dan tidak dalam menulis buku
     */
+    AdrPenulis q = P.First;
+    int maxBooks = 0, minBooks = 10;
+    AdrPenulis aktif = NULL, pasif = NULL;
+
+    while (q != NULL) {
+        int count = 0;
+        AdrRelasi r = R.First;
+        while (r != NULL) {
+            if (r->PR == q) {
+                count++;
+            }
+            r = r->next;
+        }
+        if (count > maxBooks) {
+            maxBooks = count;
+            aktif = q;
+        }
+        if (count < minBooks) {
+            minBooks = count;
+            pasif = q;
+        }
+        q = q->next;
+    }
+
+    cout << "Penulis paling aktif: " << aktif->InfoPen.nama << " dengan " << maxBooks << " buku.\n";
+    cout << "Penulis paling pasif: " << pasif->InfoPen.nama << " dengan " << minBooks << " buku.\n";
 }
 
-void TampilkanPenulisSelectionSortAscending(){
+void TampilkanPenulisSelectionSortAscending(ListPenulis &P){
     /*
     Menampilkan data Penulis secara ascending
     */
+   if (P.First == NULL) {
+        cout << "List penulis kosong." << endl;
+        return;
+    }
+
+    AdrPenulis i = P.First;
+    while (i != NULL) {
+        AdrPenulis minNode = i;
+        AdrPenulis j = i->next;
+        while (j != NULL) {
+            if (j->InfoPen.nama < minNode->InfoPen.nama) {
+                minNode = j;
+            }
+            j = j->next;
+        }
+
+        if (minNode != i) {
+            Penulis temp = i->InfoPen;
+            i->InfoPen = minNode->InfoPen;
+            minNode->InfoPen = temp;
+        }
+
+        i = i->next;
+    }
+
+    cout << "Daftar penulis dalam urutan ascending:" << endl;
+    AdrPenulis curr = P.First;
+    while (curr != NULL) {
+        cout << "Nama Penulis: " << curr->InfoPen.nama << endl;
+        curr = curr->next;
+    }
 }
 
-void TampilkanPenulisInsertionSortDescending(){
+void TampilkanPenulisInsertionSortDescending(ListPenulis &P){
     /*
     Menampilkan data Penulis secara descending
     */
+   if (P.First == NULL) {
+        cout << "List penulis kosong." << endl;
+        return;
+    }
+
+    AdrPenulis sorted = NULL;
+    AdrPenulis curr = P.First;
+
+    while (curr != NULL) {
+        AdrPenulis next = curr->next;
+
+        if (sorted == NULL || curr->InfoPen.nama > sorted->InfoPen.nama) {
+            curr->next = sorted;
+            sorted = curr;
+        } else {
+            AdrPenulis temp = sorted;
+            while (temp->next != NULL && temp->next->InfoPen.nama > curr->InfoPen.nama) {
+                temp = temp->next;
+            }
+            curr->next = temp->next;
+            temp->next = curr;
+        }
+
+        curr = next;
+    }
+
+    P.First = sorted;
+
+    cout << "Daftar penulis dalam urutan descending:" << endl;
+    AdrPenulis temp = P.First;
+    while (temp != NULL) {
+        cout << "Nama Penulis: " << temp->InfoPen.nama << endl;
+        temp = temp->next;
+    }
 }
+
+// void HapusPenulis(ListPenulis &P, ListRelasi &R, int IDPenulis) {
+//     AdrPenulis curr = P.First, prev = NULL;
+//     while (curr != NULL && curr->InfoPen.IDPenulis != IDPenulis) {
+//         prev = curr;
+//         curr = curr->next;
+//     }
+
+//     if (curr != NULL) {
+//         AdrRelasi relCurr = R.First;
+//         while (relCurr != NULL) {
+//             if (relCurr->PR == curr) {
+//                 relCurr->PR = NULL;
+//             }
+//             relCurr = relCurr->next;
+//         }
+
+//         if (prev == NULL) {
+//             P.First = curr->next;
+//         } else {
+//             prev->next = curr->next;
+//         }
+//         curr->next = NULL;
+//         cout << "Penulis berhasil dihapus dari list.\n";
+//     } else {
+//         cout << "Penulis tidak ditemukan.\n";
+//     }
+// }
+
+// void HapusBuku(ListBuku &B, ListRelasi &R, int IDBuku) {
+//     AdrBuku curr = B.First, prev = NULL;
+//     while (curr != NULL && curr->InfoBuku.IDBuku != IDBuku) {
+//         prev = curr;
+//         curr = curr->next;
+//     }
+
+//     if (curr != NULL) {
+//         AdrRelasi relCurr = R.First;
+//         while (relCurr != NULL) {
+//             if (relCurr->BR == curr) {
+//                 relCurr->BR = NULL;
+//             }
+//             relCurr = relCurr->next;
+//         }
+
+//         if (curr == B.First && curr == B.Last) {
+//             B.First = B.Last = NULL;
+//         } else if (curr == B.First) {
+//             B.First = curr->next;
+//             B.First->prev = NULL;
+//         } else if (curr == B.Last) {
+//             B.Last = curr->prev;
+//             B.Last->next = NULL;
+//         } else {
+//             curr->prev->next = curr->next;
+//             curr->next->prev = curr->prev;
+//         }
+//         curr->next = curr->prev = NULL;
+//         cout << "Buku berhasil dihapus dari list.\n";
+//     } else {
+//         cout << "Buku tidak ditemukan.\n";
+//     }
+// }
+
+// void TampilkanSemuaBuku(ListBuku B, ListRelasi R) {
+//     AdrBuku curr = B.First;
+//     while (curr != NULL) {
+//         cout << "Judul Buku: " << curr->InfoBuku.Judul << endl;
+//         AdrRelasi relCurr = R.First;
+//         while (relCurr != NULL) {
+//             if (relCurr->BR == curr) {
+//                 cout << "  Penulis: " << relCurr->PR->InfoPen.nama << endl;
+//             }
+//             relCurr = relCurr->next;
+//         }
+//         curr = curr->next;
+//     }
+// }
+
+// void TampilkanBukuByPenulis(ListRelasi R, string NamaPenulis) {
+//     AdrRelasi curr = R.First;
+//     while (curr != NULL) {
+//         if (curr->PR->InfoPen.nama == NamaPenulis || curr->PR->InfoPen.namaPena == NamaPenulis) {
+//             cout << "Judul Buku: " << curr->BR->InfoBuku.Judul << endl;
+//         }
+//         curr = curr->next;
+//     }
+// }
+
+// void TampilkanPenulisByBuku(ListRelasi R, string JudulBuku) {
+//     AdrRelasi curr = R.First;
+//     while (curr != NULL) {
+//         if (curr->BR->InfoBuku.Judul == JudulBuku) {
+//             cout << "Penulis: " << curr->PR->InfoPen.nama << endl;
+//         }
+//         curr = curr->next;
+//     }
+// }
+
+// void TampilkanPenulisPalingAktifDanPasif(ListPenulis P, ListRelasi R) {
+//     AdrPenulis q = P.First;
+//     int maxBooks = 0, minBooks = 10;
+//     AdrPenulis aktif = NULL, pasif = NULL;
+
+//     while (q != NULL) {
+//         int count = 0;
+//         AdrRelasi r = R.First;
+//         while (r != NULL) {
+//             if (r->PR == q) {
+//                 count++;
+//             }
+//             r = r->next;
+//         }
+//         if (count > maxBooks) {
+//             maxBooks = count;
+//             aktif = q;
+//         }
+//         if (count < minBooks) {
+//             minBooks = count;
+//             pasif = q;
+//         }
+//         q = q->next;
+//     }
+
+//     cout << "Penulis paling aktif: " << aktif->InfoPen.nama << " dengan " << maxBooks << " buku.\n";
+//     cout << "Penulis paling pasif: " << pasif->InfoPen.nama << " dengan " << minBooks << " buku.\n";
+// }
+
+// void TampilkanPenulisAscending(ListPenulis &P) {
+//     if (P.First == NULL) {
+//         cout << "List penulis kosong." << endl;
+//         return;
+//     }
+
+//     AdrPenulis i = P.First;
+//     while (i != NULL) {
+//         AdrPenulis minNode = i;
+//         AdrPenulis j = i->next;
+//         while (j != NULL) {
+//             if (j->InfoPen.nama < minNode->InfoPen.nama) {
+//                 minNode = j;
+//             }
+//             j = j->next;
+//         }
+
+//         if (minNode != i) {
+//             Penulis temp = i->InfoPen;
+//             i->InfoPen = minNode->InfoPen;
+//             minNode->InfoPen = temp;
+//         }
+
+//         i = i->next;
+//     }
+
+//     cout << "Daftar penulis dalam urutan ascending:" << endl;
+//     AdrPenulis curr = P.First;
+//     while (curr != NULL) {
+//         cout << "Nama Penulis: " << curr->InfoPen.nama << endl;
+//         curr = curr->next;
+//     }
+// }
+
+// void TampilkanPenulisDescending(ListPenulis &P) {
+//     if (P.First == NULL) {
+//         cout << "List penulis kosong." << endl;
+//         return;
+//     }
+
+//     AdrPenulis sorted = NULL;
+//     AdrPenulis curr = P.First;
+
+//     while (curr != NULL) {
+//         AdrPenulis next = curr->next;
+
+//         if (sorted == NULL || curr->InfoPen.nama > sorted->InfoPen.nama) {
+//             curr->next = sorted;
+//             sorted = curr;
+//         } else {
+//             AdrPenulis temp = sorted;
+//             while (temp->next != NULL && temp->next->InfoPen.nama > curr->InfoPen.nama) {
+//                 temp = temp->next;
+//             }
+//             curr->next = temp->next;
+//             temp->next = curr;
+//         }
+
+//         curr = next;
+//     }
+
+//     P.First = sorted;
+
+//     cout << "Daftar penulis dalam urutan descending:" << endl;
+//     AdrPenulis temp = P.First;
+//     while (temp != NULL) {
+//         cout << "Nama Penulis: " << temp->InfoPen.nama << endl;
+//         temp = temp->next;
+//     }
+// }
