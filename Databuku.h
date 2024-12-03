@@ -71,13 +71,14 @@ AdrBuku FindBukuByJudul(ListBuku B, string judul);
 AdrPenulis FindPenulisByName(ListPenulis P, string Nama);
 void InsertRelasi(ListRelasi &R, AdrRelasi NewRelasi);
 void AddRelasi(ListRelasi &R, string JudulBuku, ListBuku B, ListPenulis P, string NamaPenulis);
-void DeleteBuku(ListBuku &B, string BukuDihapus);
-void DeletePenulis(ListPenulis &G, string PenulisDihapus);
+void HapusPenulis(ListPenulis &P, ListRelasi &R, int IDPenulis);
+void HapusBuku(ListBuku &B, ListRelasi &R, int IDBuku);
 void PrintBukuDanPenulis(ListRelasi R);
 void PrintBukuBasedPenulis(ListRelasi R, string NamaPenulis);
 void PrintPenulisOnBuku(ListRelasi R, string judulBuku);
-void EvaluasiPenulis();
-void TampilkanPenulisSelectionSortAscending();
-void TampilkanPenulisInsertionSortDescending();
+void EvaluasiPenulis(ListPenulis P, ListRelasi R);
+void TampilkanPenulisSelectionSortAscending(ListPenulis &P);
+void TampilkanPenulisInsertionSortDescending(ListPenulis &P);
+void HapusRelasi(ListRelasi &R, AdrRelasi AR);
 
 #endif // DATABUKU_H_INCLUDED
