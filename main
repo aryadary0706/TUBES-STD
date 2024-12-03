@@ -20,8 +20,10 @@ int main() {
         cout << "6. Tampilkan Penulis (Ascending)\n";
         cout << "7. Tampilkan Penulis (Descending)\n";
         cout << "8. Tampilkan Penulis yang Paling Aktif dan Tidak Aktif\n";
-        cout << "9. Keluar";
-        cout << "Pilihan Anda: ";
+        cout << "9. Menampilkan Seluruh Data Buku dan Penulis\n";
+        cout << "10. Menampilkan Buku dari Penulis\n";
+        cout << "11. Menampilkan Penulis dari Buku\n";
+        cout << "Pilihan Anda: \n";
         cin >> pilihan;
 
         switch (pilihan) {
@@ -41,42 +43,60 @@ int main() {
                 cout << "Masukkan Nama Penulis: ";
                 getline(cin, namaPenulis);
                 AddRelasi(R, judul, B, P, namaPenulis);
+                cout<<endl;
                 break;
             }
             case 4: {
-                string NamaPenulis;
+                int IDPenulis;
                 cout << "Masukkan ID Penulis yang ingin dihapus: ";
-                cin >> NamaPenulis;
-                DeletePenulis(P, NamaPenulis);
+                cin >> IDPenulis;
+                HapusPenulis(P, R, IDPenulis);
                 break;
             }
             case 5: {
-                string JudulBuku;
+                int IDBuku;
                 cout << "Masukkan ID Buku yang ingin dihapus: ";
-                cin >> JudulBuku;
-                DeleteBuku(B, JudulBuku);
+                cin >> IDBuku;
+                HapusBuku(B, R, IDBuku);
                 break;
             }
             case 6: {
-                TampilkanPenulisSelectionSortAscending();
+                TampilkanPenulisSelectionSortAscending(P);
                 break;
             }
             case 7: {
-                TampilkanPenulisInsertionSortDescending();
+                TampilkanPenulisInsertionSortDescending(P);
                 break;
             }
             case 8: {
-                EvaluasiPenulis();
+                EvaluasiPenulis(P, R);
                 break;
-            }case 9: {
-                cout<<"Terimakasih sudah menggunakan aplikasi ini.";
             }
-            default: {
-                cout << "Pilihan tidak valid. Coba lagi.\n";
+            case 9: {
+                PrintBukuDanPenulis(R);
                 break;
+            }
+            case 10: {
+                string cache_nama;
+                cin>>cache_nama;
+                PrintBukuBasedPenulis(R, cache_nama);
+                break;
+            }
+            case 11: {
+                string cache_buku;
+                cin>>cache_buku;
+                PrintPenulisOnBuku(R, cache_buku);
+                break;
+            }
+            case 12: {
+                cout<<"Terimakasih sudah menggunakan program ini\n";
+            }
+            default : {
+                cout<<"Pilihan tidak Valid"<<endl;
             }
         }
-    } while (pilihan != 9);
+    } while (pilihan != 10);
 
     return 0;
 }
+
