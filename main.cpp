@@ -118,8 +118,82 @@ int main() {
                 cout << "---------------------------------------------"<<endl;
                 cout << "                  EDIT DATA"<<endl;
                 cout << "---------------------------------------------"<<endl;
-                cout<<"TISEE KERJAIN PLIS";
-                break; // Tambahkan break untuk case 3
+                cout << "1. Update Data Buku" << endl;
+                cout << "2. Update Data Penulis" << endl;
+                cout << "0. Keluar" << endl;
+                cout << "Pilih kategori: ";
+                cin >> pilihan;
+
+                switch (pilihan) {
+                    case 1: // Update Data Buku
+                    cout << "\n=== Update Data Buku ===" << endl;
+                    cout << "Masukkan ID Buku: ";
+                    int ID;
+                    cin >> ID;
+                    cout << "1. Update Judul" << endl;
+                    cout << "2. Update Penerbit" << endl;
+                    cout << "3. Update Tahun Terbit" << endl;
+                    cout << "4. Update Cetakan" << endl;
+                    cout << "5. Update Editor" << endl;
+                    cout << "Pilih atribut yang akan diubah: ";
+                    cin >> pilihan;
+
+                    switch (pilihan) {
+                        case 1:
+                            updateJudulBuku(B, ID);
+                            break;
+                        case 2:
+                            updatePenerbitBuku(B, ID);
+                            break;
+                        case 3:
+                            updateTahunTerbitBuku(B, ID);
+                            break;
+                        case 4:
+                            updateCetakanBuku(B, ID);
+                            break;
+                        case 5:
+                            updateEditorBuku(B, ID);
+                            break;
+                        default:
+                            cout << "Pilihan atribut tidak valid." << endl;
+                            break;
+                    }
+                    break;
+
+                    case 2: // Update Data Penulis
+                    cout << "\n=== Update Data Penulis ===" << endl;
+                    cout << "Masukkan ID Penulis: ";
+                    cin >> ID;
+                    cout << "1. Update Nama" << endl;
+                    cout << "2. Update Asal" << endl;
+                    cout << "3. Update Nama Pena" << endl;
+                    cout << "Pilih atribut yang akan diubah: ";
+                    cin >> pilihan;
+
+                    switch (pilihan) {
+                        case 1:
+                            updateNamaPenulis(P, ID);
+                            break;
+                        case 2:
+                            updateAsalPenulis(P, ID);
+                            break;
+                        case 3:
+                            updateNamaPenaPenulis(P, ID);
+                            break;
+                        default:
+                            cout << "Pilihan atribut tidak valid." << endl;
+                            break;
+                    }
+                    break;
+
+                    case 0: // Keluar
+                        cout << "Keluar dari menu update data." << endl;
+                        break;
+
+                    default:
+                        cout << "Pilihan kategori tidak valid." << endl;
+                        break;
+                }
             }
             case 4: {
                 int A4;
