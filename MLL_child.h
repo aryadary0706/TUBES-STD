@@ -37,5 +37,10 @@ void InsertLastBuku(ListBuku &B, AdrBuku book);
 void InsertAfterBuku(ListBuku &B, AdrBuku prec, AdrBuku book);
 void HapusBuku(ListBuku &B, int IDBuku);
 AdrBuku FindBukuByJudul(ListBuku B, string judul);
+void updateJudulBuku(ListBuku &B, int IDBuku);
+void updatePenerbitBuku(ListBuku &B, int IDBuku);
+void updateTahunTerbitBuku(ListBuku &B, int IDBuku);
+void updateCetakanBuku(ListBuku &B, int IDBuku);
+void updateEditorBuku(ListBuku &B, int IDBuku);
 
 #endif // MLL_CHILD_H_INCLUDED
