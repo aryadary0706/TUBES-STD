@@ -9,6 +9,11 @@ FUNGSI DAN PROSEDUR YANG DIPAKAI DALAM MLL_DATABUKU.h (Double-linked List)
 5. void InsertAfterBuku(ListBuku &B, AdrBuku prec, AdrBuku book);
 6. void HapusBuku(ListBuku &B, int IDBuku);
 7. AdrBuku FindBukuByJudul(ListBuku B, string judul);
+8. void updateJudulBuku(ListBuku &B, int IDBuku);
+9. void updatePenerbitBuku(ListBuku &B, int IDBuku);
+10. void updateTahunTerbitBuku(ListBuku &B, int IDBuku);
+11. void updateCetakanBuku(ListBuku &B, int IDBuku);
+12. void updateEditorBuku(ListBuku &B, int IDBuku);
 */
 
 void createListBuku(ListBuku &B){
@@ -141,6 +146,77 @@ void HapusBuku(ListBuku &B, int IDBuku) {
     }
 }
 
+void updateJudulBuku(ListBuku &B, int IDBuku) {
+    AdrBuku book = B.First;
+    while (book != NULL && book->InfoBuku.IDBuku != IDBuku) {
+        book = book->next;
+    }
+    if (book == NULL) {
+        cout << "Buku dengan ID " << IDBuku << " tidak ditemukan." << endl;
+        return;
+    }
+    cout << "Masukkan judul baru: ";
+    cin >> book->InfoBuku.Judul;
+    cout << "Judul berhasil diperbarui." << endl;
+}
+
+void updatePenerbitBuku(ListBuku &B, int IDBuku) {
+    AdrBuku book = B.First;
+    while (book != NULL && book->InfoBuku.IDBuku != IDBuku) {
+        book = book->next;
+    }
+    if (book == NULL) {
+        cout << "Buku dengan ID " << IDBuku << " tidak ditemukan." << endl;
+        return;
+    }
+    cout << "Masukkan penerbit baru: ";
+    cin >> book->InfoBuku.Penerbit;
+    cout << "Penerbit berhasil diperbarui." << endl;
+}
+
+void updateTahunTerbitBuku(ListBuku &B, int IDBuku) {
+    AdrBuku book = B.First;
+    while (book != NULL && book->InfoBuku.IDBuku != IDBuku) {
+        book = book->next;
+    }
+    if (book == NULL) {
+        cout << "Buku dengan ID " << IDBuku << " tidak ditemukan." << endl;
+        return;
+    }
+    cout << "Masukkan tahun terbit baru: ";
+    cin >> book->InfoBuku.Tahunterbit;
+    cout << "Tahun terbit berhasil diperbarui." << endl;
+}
+
+void updateCetakanBuku(ListBuku &B, int IDBuku) {
+    AdrBuku book = B.First;
+    while (book != NULL && book->InfoBuku.IDBuku != IDBuku) {
+        book = book->next;
+    }
+    if (book == NULL) {
+        cout << "Buku dengan ID " << IDBuku << " tidak ditemukan." << endl;
+        return;
+    }
+    cout << "Masukkan cetakan baru: ";
+    cin >> book->InfoBuku.Cetakan;
+    cout << "Cetakan berhasil diperbarui." << endl;
+}
+
+void updateEditorBuku(ListBuku &B, int IDBuku) {
+    AdrBuku book = B.First;
+    while (book != NULL && book->InfoBuku.IDBuku != IDBuku) {
+        book = book->next;
+    }
+    if (book == NULL) {
+        cout << "Buku dengan ID " << IDBuku << " tidak ditemukan." << endl;
+        return;
+    }
+    cout << "Masukkan editor baru: ";
+    cin >> book->InfoBuku.Editor;
+    cout << "Editor berhasil diperbarui." << endl;
+}
+
+
 /*
 FUNGSI DAN PROSEDUR YANG DIPAKAI DALAM MLL_DATAPENULIS.h (SINGLE-linked List)
 void createListPenulis(ListPenulis &P);
@@ -150,6 +226,9 @@ void AddPenulis(ListPenulis &P);
 AdrPenulis FindPenulisByName(ListPenulis P, string Nama);
 void TampilkanPenulisSelectionSortAscending(ListPenulis &P);
 void TampilkanPenulisInsertionSortDescending(ListPenulis &P);
+void updateNamaPenulis(ListPenulis &P, int IDPenulis);
+void updateAsalPenulis(ListPenulis &P, int IDPenulis);
+void updateNamaPenaPenulis(ListPenulis &P, int IDPenulis);
 */
 
 void createListPenulis(ListPenulis &P){
@@ -270,7 +349,11 @@ void TampilkanPenulisSelectionSortAscending(ListPenulis &P){
     cout << "Daftar penulis dalam urutan ascending:" << endl;
     AdrPenulis curr = P.First;
     while (curr != NULL) {
-        cout << "Nama Penulis: " << curr->InfoPen.nama << endl;
+        cout<<"ID penulis: "<<curr->InfoPen.IDPenulis<<endl;
+        cout<<"Nama Penulis: "<<curr->InfoPen.nama<<endl;
+        cout<<"Nama Pena: "<<curr->InfoPen.namaPena<<endl;
+        cout<<"Asal penulis:"<<curr->InfoPen.asal<<endl;
+        cout<<"==============================================="<<endl;
         curr = curr->next;
     }
 }
@@ -310,7 +393,11 @@ void TampilkanPenulisInsertionSortDescending(ListPenulis &P){
     cout << "Daftar penulis dalam urutan descending:" << endl;
     AdrPenulis temp = P.First;
     while (temp != NULL) {
-        cout << "Nama Penulis: " << temp->InfoPen.nama << endl;
+        cout<<"ID penulis: "<<temp->InfoPen.IDPenulis<<endl;
+        cout<<"Nama Penulis: "<<temp->InfoPen.nama<<endl;
+        cout<<"Nama Pena: "<<temp->InfoPen.namaPena<<endl;
+        cout<<"Asal penulis:"<<temp->InfoPen.asal<<endl;
+        cout<<"==============================================="<<endl;
         temp = temp->next;
     }
 }
@@ -332,6 +419,48 @@ void HapusPenulis(ListPenulis &P, int IDPenulis) {
         previous = current; // Move to the next node
         current = current->next; // Move to the next node
     }
+}
+
+void updateNamaPenulis(ListPenulis &P, int IDPenulis) {
+    AdrPenulis writer = P.First;
+    while (writer != NULL && writer->InfoPen.IDPenulis != IDPenulis) {
+        writer = writer->next;
+    }
+    if (writer == NULL) {
+        cout << "Penulis dengan ID " << IDPenulis << " tidak ditemukan." << endl;
+        return;
+    }
+    cout << "Masukkan nama baru: ";
+    cin >> writer->InfoPen.nama;
+    cout << "Nama berhasil diperbarui." << endl;
+}
+
+void updateAsalPenulis(ListPenulis &P, int IDPenulis) {
+    AdrPenulis writer = P.First;
+    while (writer != NULL && writer->InfoPen.IDPenulis != IDPenulis) {
+        writer = writer->next;
+    }
+    if (writer == NULL) {
+        cout << "Penulis dengan ID " << IDPenulis << " tidak ditemukan." << endl;
+        return;
+    }
+    cout << "Masukkan asal baru: ";
+    cin >> writer->InfoPen.asal;
+    cout << "Asal berhasil diperbarui." << endl;
+}
+
+void updateNamaPenaPenulis(ListPenulis &P, int IDPenulis) {
+    AdrPenulis writer = P.First;
+    while (writer != NULL && writer->InfoPen.IDPenulis != IDPenulis) {
+        writer = writer->next;
+    }
+    if (writer == NULL) {
+        cout << "Penulis dengan ID " << IDPenulis << " tidak ditemukan." << endl;
+        return;
+    }
+    cout << "Masukkan nama pena baru: ";
+    cin >> writer->InfoPen.namaPena;
+    cout << "Nama pena berhasil diperbarui." << endl;
 }
 
 /*
