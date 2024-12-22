@@ -35,5 +35,6 @@ void TampilkanPenulisInsertionSortDescending(ListPenulis &P);
 void updateNamaPenulis(ListPenulis &P, int IDPenulis);
 void updateAsalPenulis(ListPenulis &P, int IDPenulis);
 void updateNamaPenaPenulis(ListPenulis &P, int IDPenulis);
+void PrintListPenulis(ListPenulis &P);
 
 #endif // MLL_PARENT_H_INCLUDED
