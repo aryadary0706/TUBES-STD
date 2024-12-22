@@ -216,6 +216,16 @@ void updateEditorBuku(ListBuku &B, int IDBuku) {
     cout << "Editor berhasil diperbarui." << endl;
 }
 
+void PrintListBuku(ListBuku B){
+    AdrBuku Br;
+    Br = B.First;
+    while (Br != NULL){
+        cout<<"==============================================="<<endl;
+        cout<<"Judul Buku: "<<Br->InfoBuku.Judul<<endl;
+        cout<<"==============================================="<<endl;
+        Br = Br->next;
+    }
+}
 
 /*
 FUNGSI DAN PROSEDUR YANG DIPAKAI DALAM MLL_DATAPENULIS.h (SINGLE-linked List)
@@ -463,6 +473,19 @@ void updateNamaPenaPenulis(ListPenulis &P, int IDPenulis) {
     cout << "Nama pena berhasil diperbarui." << endl;
 }
 
+void PrintListPenulis(ListPenulis &P){
+    AdrPenulis Pr = P.First;
+    while (Pr != NULL){
+        cout<<"==============================================="<<endl;
+        cout<<"ID Penulis: "<<Pr->InfoPen.IDPenulis<<endl;
+        cout<<"Nama Penulis: "<<Pr->InfoPen.nama<<endl;
+        cout<<"Nama Pena Penulis: "<<Pr->InfoPen.namaPena<<endl;
+        cout<<"Asal Penulis: "<<Pr->InfoPen.asal<<endl;
+        cout<<"==============================================="<<endl;
+        Pr = Pr->next;
+    }
+}
+
 /*
 FUNGSI DAN PROSEDUR YANG DIPAKAI DALAM MLL_Relasi.h (SINGLE-linked List)
 void InsertRelasi(ListRelasi &R, AdrRelasi NewRelasi);
@@ -536,9 +559,9 @@ void PrintBukuBasedPenulis(ListRelasi R, string NamaPenulis){
     */
     AdrRelasi R_pointer = R.First;
     AdrBuku BfromR;
+    cout<<"Judul-judul Buku yang sudah ditulis "<<NamaPenulis<<endl;
     while (R_pointer != NULL){
-            cout<<"Judul-judul Buku yang sudah ditulis "<<NamaPenulis<<endl;
-            if (R_pointer->PR->InfoPen.nama == NamaPenulis && R_pointer->PR->InfoPen.namaPena == NamaPenulis){
+            if (R_pointer->PR->InfoPen.nama == NamaPenulis || R_pointer->PR->InfoPen.namaPena == NamaPenulis){
                BfromR = R_pointer->BR;
                cout<<"==============================================="<<endl;
                cout<<"ID BUKU: "<<BfromR->InfoBuku.IDBuku<<endl;
@@ -571,8 +594,11 @@ void PrintPenulisOnBuku(ListRelasi R, string judulBuku){
             cout<<"Asal Penulis: "<<PfromR->InfoPen.asal<<endl;
              cout<<"==============================================="<<endl;
         }
+        RP = RP->next;
     }
 }
+
+
 
 /*
 FUNGSI DAN PROSEDUR YANG DIPAKAI DALAM MLL.h
