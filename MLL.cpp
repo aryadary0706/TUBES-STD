@@ -36,24 +36,19 @@ AdrBuku AllocateBuku(){
     AdrBuku book = new ElmBuku;
 
     //Proses Input Informasi Buku
-    cout<<"Masukkan ID Buku:";
+    cout<<"Masukkan ID Buku: ";
     cin>>ID;
-    cout<<endl;
-    cout<<"Masukkan Judul Buku:";
+    cout<<"Masukkan Judul Buku: ";
     cin>>judul;
-    cout<<endl;
-    cout<<"Masukkan nama penerbit:";
+    cout<<"Masukkan Nama Penerbit: ";
     cin>>penerbit;
-    cout<<endl;
-    cout<<"Masukkan Tahun Terbit Buku:";
+    cout<<"Masukkan Tahun Terbit Buku: ";
     cin>>tahunTerbit;
-    cout<<endl;
-    cout<<"Masukkan versi cetakan buku:";
+    cout<<"Masukkan Versi Cetakan Buku: ";
     cin>>cetakan;
-    cout<<endl;
-    cout<<"Masukkan Nama Editor:";
+    cout<<"Masukkan Nama Editor: ";
     cin>>Editor;
-    cout<<endl;
+
 
     book->InfoBuku.IDBuku = ID;
     book->InfoBuku.Judul = judul;
@@ -91,11 +86,11 @@ void InsertLastBuku(ListBuku &B, AdrBuku book){
 
 void InsertAfterBuku(ListBuku &B, AdrBuku prec, AdrBuku book){
     string JudulDicari;
-    cout<<"Masukkan buku yang ingin diinput setelahnya:"<<endl;
+    cout<<"Masukkan buku yang ingin diinput setelahnya: "<<endl;
     cin>>JudulDicari;
     prec = FindBukuByJudul(B, JudulDicari);
     if (prec == NULL) {
-        cout << "Elemen sebelumnya (prec) tidak boleh NULL." << endl;
+        cout << "Buku tidak ditemukan" << endl;
         return;
     }
     if (prec->next == NULL) { // Jika prec adalah elemen terakhir
@@ -223,6 +218,12 @@ void PrintListBuku(ListBuku B){
         cout<<"==============================================="<<endl;
         cout<<"Judul Buku: "<<Br->InfoBuku.Judul<<endl;
         cout<<"==============================================="<<endl;
+        cout<<"ID Buku: "<<Br->InfoBuku.IDBuku<<endl;
+        cout<<"Nama Penerbit: "<<Br->InfoBuku.Penerbit<<endl;
+        cout<<"Tahun Terbit: "<<Br->InfoBuku.Tahunterbit<<endl;
+        cout<<"Versi Cetakan: "<<Br->InfoBuku.Cetakan<<endl;
+        cout<<"Nama Editor: "<<Br->InfoBuku.Editor<<endl;
+        cout<<"==============================================="<<endl;
         Br = Br->next;
     }
 }
@@ -259,18 +260,14 @@ AdrPenulis AllocatePenulis(){
     int ID;
 
     AdrPenulis Pen = new ElmPenulis;
-    cout<<"Masukkan ID Penulis:";
+    cout<<"Masukkan ID Penulis: ";
     cin>>ID;
-    cout<<endl;
-    cout<<"Masukkan Nama asli Penulis:";
+    cout<<"Masukkan Nama asli Penulis: ";
     cin>>nama;
-    cout<<endl;
-    cout<<"Masukkan Asal penulis:";
+    cout<<"Masukkan Asal penulis: ";
     cin>>asal;
-    cout<<endl;
-    cout<<"Masukkan Nama pena penulis('-' jika tidak ada):";
+    cout<<"Masukkan Nama pena penulis('-' jika tidak ada): ";
     cin>>namapena;
-    cout<<endl;
 
     Pen->InfoPen.IDPenulis = ID;
     Pen->InfoPen.nama = nama;
