@@ -35,14 +35,16 @@ int main() {
                 cout << "3. Keluar\n";
                 cout << "Masukkan pilihan: ";
                 cin >> P1;
+                cout<<endl;
 
                 if (P1 == 1) {
                     AdrBuku book;
                     book = AllocateBuku();
                     InputBukukeList(B, book, R);
-                    cout<<"Apakah kamu ingin menambah data penulis dari buku? [Y untuk menjawab]\n"; //Untuk nambah data relasi secara langsung
+                    cout<<"Apakah kamu ingin menambah data penulis dari buku? [Y/N]\n"; //Untuk nambah data relasi secara langsung
                     char A1;
                     cin>>A1;
+                    cout<<endl;
                     if (A1 == 'Y' || A1 == 'y'){
                         string Nama_Pen;
                         cout<<"Masukkan nama penulis buku yang menulis "<<book->InfoBuku.Judul<<": ";
@@ -52,6 +54,7 @@ int main() {
                             AddRelasi(R, book->InfoBuku.Judul, B, P, Nama_Pen);
                         }else{
                             cout<<"Penulis tidak ditemukan. Isi Data Penulis tersebut untuk menyelesaikan proses\n";
+                            cout<<endl;
                             AdrPenulis NewPenulis = AllocatePenulis();
                             InputPenuliskeList(P, NewPenulis, R);
                             AddRelasi(R, book->InfoBuku.Judul, B, P, NewPenulis->InfoPen.nama);
@@ -63,7 +66,7 @@ int main() {
                     AdrPenulis Pen;
                     Pen = AllocatePenulis();
                     InputPenuliskeList(P, Pen, R);
-                    cout<<"Apakah kamu ingin menambah data Buku dari Penulis?[Y untuk Menjawab]\n"; //Untuk nambah data relasi secara langsung
+                    cout<<"Apakah kamu ingin menambah data Buku dari Penulis?[Y/N]\n"; //Untuk nambah data relasi secara langsung
                     char A2;
                     cin>>A2;
                     if (A2 == 'Y' || A2 == 'y'){
@@ -207,8 +210,8 @@ int main() {
                 cout<<"2. Cari Buku Berdasarkan Nama Penulis"<<endl;
                 cout<<"3. Tampilkan Buku dan Penulis (Tanpa Urutan)"<<endl;
                 cout<<"4. Tampilkan Nama Penulis secara Ascending"<<endl;
-                cout<<"5. Tampilkanm Nama Penulis secara Descending"<<endl;
-                cout<<"6. Tampilkan Penulis yang paling aktif dan paling malas"<<endl;
+                cout<<"5. Tampilkan Nama Penulis secara Descending"<<endl;
+                cout<<"6. Tampilkan Penulis yang paling aktif maupun tidak aktif"<<endl;
                 cout<<"7. Tampilkan Daftar Buku"<<endl;
                 cout<<"8. Tampilkan Daftar Penulis"<<endl;
                 cout<<"9. Keluar\n";
