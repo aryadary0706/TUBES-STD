@@ -214,6 +214,11 @@ void updateEditorBuku(ListBuku &B, int IDBuku) {
 void PrintListBuku(ListBuku B){
     AdrBuku Br;
     Br = B.First;
+    if (Br == NULL) {
+        cout<<"==============================================="<<endl;
+        cout << "Tidak ada data buku!" << endl;
+        cout<<"==============================================="<<endl;
+    }
     while (Br != NULL){
         cout<<"==============================================="<<endl;
         cout<<"Judul Buku: "<<Br->InfoBuku.Judul<<endl;
@@ -472,6 +477,11 @@ void updateNamaPenaPenulis(ListPenulis &P, int IDPenulis) {
 
 void PrintListPenulis(ListPenulis &P){
     AdrPenulis Pr = P.First;
+        if (Pr == NULL) {
+        cout<<"==============================================="<<endl;
+        cout << "Tidak ada data penulis!" << endl;
+        cout<<"==============================================="<<endl;
+    }
     while (Pr != NULL){
         cout<<"==============================================="<<endl;
         cout<<"ID Penulis: "<<Pr->InfoPen.IDPenulis<<endl;
