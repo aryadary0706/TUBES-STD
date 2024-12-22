@@ -43,7 +43,7 @@ int main() {
                     cout<<"Apakah kamu ingin menambah data penulis dari buku? [Y untuk menjawab]\n"; //Untuk nambah data relasi secara langsung
                     char A1;
                     cin>>A1;
-                    if (A1 == 'Y'){
+                    if (A1 == 'Y' || A1 == 'y'){
                         string Nama_Pen;
                         cout<<"Masukkan nama penulis buku yang menulis "<<book->InfoBuku.Judul<<": ";
                         cin>>Nama_Pen;
@@ -63,10 +63,10 @@ int main() {
                     AdrPenulis Pen;
                     Pen = AllocatePenulis();
                     InputPenuliskeList(P, Pen, R);
-                    cout<<"Apakah kamu ingin menambah data Buku dari Penulis?\n"; //Untuk nambah data relasi secara langsung
+                    cout<<"Apakah kamu ingin menambah data Buku dari Penulis?[Y untuk Menjawab]\n"; //Untuk nambah data relasi secara langsung
                     char A2;
                     cin>>A2;
-                    if (A2 == 'Y'){
+                    if (A2 == 'Y' || A2 == 'y'){
                         string judul_buku;
                         cout<<"Masukkan nama judul buku yang ditulis "<<Pen->InfoPen.nama<<": ";
                         cin>>judul_buku;
@@ -103,12 +103,14 @@ int main() {
                     cin>>IDbuku;
                     HapusBukuPadaRelasi(B, R, IDbuku);
                     HapusBuku(B, IDbuku);
+                    break;
                 }else if (P2 == 2){
                     int IDPen;
                     cout<<"Masukkan ID Penulis yang ingin dihapus: ";
                     cin>>IDPen;
                     HapusPenulisPadaRelasi(P, R, IDPen);
                     HapusPenulis(P, IDPen);
+                    break;
                 }else {
                     break;
                 }
@@ -207,7 +209,9 @@ int main() {
                 cout<<"4. Tampilkan Nama Penulis secara Ascending"<<endl;
                 cout<<"5. Tampilkanm Nama Penulis secara Descending"<<endl;
                 cout<<"6. Tampilkan Penulis yang paling aktif dan paling malas"<<endl;
-                cout<<"7. Keluar\n";
+                cout<<"7. Tampilkan Daftar Buku"<<endl;
+                cout<<"8. Tampilkan Daftar Penulis"<<endl;
+                cout<<"9. Keluar\n";
                 cout<<"Masukkan Pilihan Anda: \n";
                 cin>>A4;
                 if (A4 == 1){
@@ -235,6 +239,12 @@ int main() {
                     EvaluasiPenulis(P, R);
                     break;
                 }else if (A4 == 7){
+                    PrintListBuku(B);
+                    break;
+                }else if (A4 == 8){
+                    PrintListPenulis(P);
+                    break;
+                }else if (A4 == 9){
                     break;
                 }
             }
