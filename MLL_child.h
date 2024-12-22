@@ -42,5 +42,6 @@ void updatePenerbitBuku(ListBuku &B, int IDBuku);
 void updateTahunTerbitBuku(ListBuku &B, int IDBuku);
 void updateCetakanBuku(ListBuku &B, int IDBuku);
 void updateEditorBuku(ListBuku &B, int IDBuku);
+void PrintListBuku(ListBuku B);
 
 #endif // MLL_CHILD_H_INCLUDED
