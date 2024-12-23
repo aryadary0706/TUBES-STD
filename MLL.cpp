@@ -25,7 +25,7 @@ void createListBuku(ListBuku &B){
     B.Last = NULL;
 }
 
-AdrBuku AllocateBuku(){
+AdrBuku AllocateBuku(ListBuku B){
     /*
     (I.S : Terdefinisi ListBuku B yang bisa saja kosong
     proses : Mengalokasikan AdrBuku book. Memasukan elemen dari book dengan input dari user. Setelahnya, dilanjutkan proses InsertBuku untuk memasukkan ADrBuku book ke dalam ListBuku B
@@ -34,6 +34,7 @@ AdrBuku AllocateBuku(){
     string judul, penerbit, Editor;
     int tahunTerbit, cetakan, ID;
     AdrBuku book = new ElmBuku;
+
 
     //Proses Input Informasi Buku
     cout<<"Masukkan ID Buku: ";
@@ -49,7 +50,14 @@ AdrBuku AllocateBuku(){
     cout<<"Masukkan Nama Editor: ";
     cin>>Editor;
 
+    AdrBuku checkJudul = FindBukuByJudul(B, judul);
+    AdrBuku checkId;
+    checkId = B.First;
+    while (checkId != NULL && checkId->InfoBuku.IDBuku != ID){
+        checkId = checkId->next;
+    }
 
+    if (checkJudul == NULL && checkId == NULL){
     book->InfoBuku.IDBuku = ID;
     book->InfoBuku.Judul = judul;
     book->InfoBuku.Penerbit = penerbit;
@@ -59,6 +67,10 @@ AdrBuku AllocateBuku(){
     book->next = NULL;
     book->prev = NULL;
 
+    }else{
+        cout<<"ID buku atau Judul Buku sudah terdaftar"<<endl;
+        AllocateBuku(B);
+    }
     return book;
 }
 
@@ -119,23 +131,45 @@ AdrBuku FindBukuByJudul(ListBuku B, string judul){
 }
 
 void HapusBuku(ListBuku &B, int IDBuku) {
-    AdrBuku current = B.First; // Pointer to traverse the list
-
+    AdrBuku current = B.First;// Pointer to traverse the list
+    AdrBuku delNode;
+    if (B.First == NULL && B.Last == NULL){
+        cout<<"Tidak ada buku yang terdata dalam administrasi"<<endl;
+        return;
+    }
     while (current != NULL) {
         if (current->InfoBuku.IDBuku == IDBuku) {
-            if (current == B.First) { // If it's the first node
-                B.First = current->next; // Update the head of the list
-                if (B.First != NULL) {
-                    B.First->prev = NULL; // Update the previous pointer of the new head
+            if (current == B.First){
+                if (current->next == NULL){
+                    current = B.First;
+                    B.First = NULL;
+                    B.Last = NULL;
+                }else{
+                    current = B.First;
+                    B.First = current->next;
+                    current->next = NULL;
+                    B.First->prev = NULL;
                 }
-            } else if (current->next == NULL) { // If it's the last node
-                current->prev->next = NULL; // Update the next pointer of the previous node
-            } else { // If it's a middle node
-                current->prev->next = current->next; // Bypass the current node
-                current->next->prev = current->prev; // Update the previous pointer of the next node
+            }else if (current == B.Last){
+                if (B.Last->prev == NULL){
+                    current = B.Last;
+                    B.First = NULL;
+                    B.Last = NULL;
+                }else{
+                    current = B.Last;
+                    B.Last = current->prev;
+                    current->prev = NULL;
+                    B.Last->next = NULL;
+                }
+            }else{
+                AdrBuku temp = current;
+                temp = current->next;
+                current->next = temp->next;
+                if (temp->next != NULL){
+                    temp->next->prev = current;
+                }
+                temp = NULL;
             }
-            delete current; // Free memory
-            return; // Exit after deletion
         }
         current = current->next; // Move to the next node
     }
@@ -255,31 +289,44 @@ void createListPenulis(ListPenulis &P){
     P.First = NULL;
 }
 
-AdrPenulis AllocatePenulis(){
+AdrPenulis AllocatePenulis(ListPenulis P){
     /*
     (I.S : Terdefinisi ListBuku P yang bisa saja kosong
     proses : Mengalokasikan AdrPenulis Pen. Memasukan elemen dari Pen dengan input dari user. Setelahnya, dilanjutkan proses InsertPenulis untuk memasukkan AdrPenulis book ke dalam ListPenulis P
     F.S : alamat Pen masuk ke dalam ListPenulis P)
     */
-    string nama, asal, namapena;
+    string Nama, NamaPena, Asal;
     int ID;
-
     AdrPenulis Pen = new ElmPenulis;
+
+
+    //Proses Input Informasi Buku
     cout<<"Masukkan ID Penulis: ";
     cin>>ID;
-    cout<<"Masukkan Nama asli Penulis: ";
-    cin>>nama;
-    cout<<"Masukkan Asal penulis: ";
-    cin>>asal;
-    cout<<"Masukkan Nama pena penulis('-' jika tidak ada): ";
-    cin>>namapena;
+    cout<<"Masukkan Nama Penulis: ";
+    cin>>Nama;
+    cout<<"Masukkan Nama Pena Penulis ('-' jika tak ada): ";
+    cin>>NamaPena;
+    cout<<"Masukkan Asal Penulis: ";
+    cin>>Asal;
 
+    AdrPenulis checkNama = FindPenulisByName(P, Nama);
+    AdrPenulis checkId;
+    checkId = P.First;
+    while (checkId != NULL && checkId->InfoPen.IDPenulis != ID){
+        checkId = checkId->next;
+    }
+
+    if (checkNama == NULL && checkId == NULL){
     Pen->InfoPen.IDPenulis = ID;
-    Pen->InfoPen.nama = nama;
-    Pen->InfoPen.asal = asal;
-    Pen->InfoPen.namaPena = namapena;
+    Pen->InfoPen.nama = Nama;
+    Pen->InfoPen.namaPena = NamaPena;
+    Pen->InfoPen.asal = Asal;
     Pen->next = NULL;
-
+    }else{
+        cout<<"ID buku atau Judul Buku sudah terdaftar"<<endl;
+        AllocatePenulis(P);
+    }
     return Pen;
 }
 
@@ -416,19 +463,30 @@ void TampilkanPenulisInsertionSortDescending(ListPenulis &P){
 
 void HapusPenulis(ListPenulis &P, int IDPenulis) {
     AdrPenulis current = P.First; // Pointer to traverse the list
-    AdrPenulis previous = NULL; // Pointer to keep track of the previous node
-
+    if (P.First == NULL){
+        cout<<"Tidak ada Penulis yang terdata"<<endl;
+    }
     while (current != NULL) {
-        if (current->InfoPen.IDPenulis == IDPenulis) {
-            if (previous == NULL) { // If it's the first node
-                P.First = current->next; // Update the head of the list
-            } else { // If it's not the first node
-                previous->next = current->next; // Bypass the current node
+        if (current == P.First){
+            if (P.First->next == NULL){
+                current = P.First;
+                P.First = NULL;
+            }else if (current->next == NULL){
+                AdrPenulis temp = P.First;
+                while (temp->next != current){
+                    temp = temp->next;
+                }
+                temp->next == NULL;
+            }else{
+                AdrPenulis temp = P.First;
+                while (temp->next != current){
+                    temp = temp->next;
+                }
+                current = temp->next;
+                temp->next = current->next;
+                current->next = NULL;
             }
-            delete current; // Free memory
-            return; // Exit after deletion
         }
-        previous = current; // Move to the next node
         current = current->next; // Move to the next node
     }
 }
@@ -757,4 +815,24 @@ void InputPenuliskeList(ListPenulis &P, AdrPenulis Pen, ListRelasi &R){
             InsertAfterPen(P, previous, Pen);
         }
     }
+}
+
+void TambahRelasiPenulis(ListRelasi &R, ListBuku B, ListPenulis P){
+    string JudulBuku, NamaPen;
+    cout<< "Nama Penulis yang ingin di-update: ";
+    cin>> NamaPen;
+    cout<<endl;
+    cout<< "Judul Buku yang ingin ditambahkan: ";
+    cin>> JudulBuku;
+    AddRelasi(R, JudulBuku, B, P, NamaPen);
+}
+
+void TambahRelasiBuku(ListRelasi &R,ListBuku B,ListPenulis P){
+    string JudulBuku, NamaPen;
+    cout<< "Judul buku yang ingin di-update: ";
+    cin>> JudulBuku;
+    cout<<endl;
+    cout<< "Nama Penulis yang ingin ditambahkan: ";
+    cin>> NamaPen;
+   AddRelasi(R, JudulBuku, B, P, NamaPen);
 }
