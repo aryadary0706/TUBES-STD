@@ -39,7 +39,7 @@ int main() {
 
                 if (P1 == 1) {
                     AdrBuku book;
-                    book = AllocateBuku();
+                    book = AllocateBuku(B);
                     InputBukukeList(B, book, R);
                     cout<<"Apakah kamu ingin menambah data penulis dari buku? [Y/N]\n"; //Untuk nambah data relasi secara langsung
                     char A1;
@@ -55,7 +55,7 @@ int main() {
                         }else{
                             cout<<"Penulis tidak ditemukan. Isi Data Penulis tersebut untuk menyelesaikan proses\n";
                             cout<<endl;
-                            AdrPenulis NewPenulis = AllocatePenulis();
+                            AdrPenulis NewPenulis = AllocatePenulis(P);
                             InputPenuliskeList(P, NewPenulis, R);
                             AddRelasi(R, book->InfoBuku.Judul, B, P, NewPenulis->InfoPen.nama);
                         }
@@ -64,7 +64,7 @@ int main() {
                     }
                 } else if (P1 == 2) {
                     AdrPenulis Pen;
-                    Pen = AllocatePenulis();
+                    Pen = AllocatePenulis(P);
                     InputPenuliskeList(P, Pen, R);
                     cout<<"Apakah kamu ingin menambah data Buku dari Penulis?[Y/N]\n"; //Untuk nambah data relasi secara langsung
                     char A2;
@@ -78,7 +78,7 @@ int main() {
                             AddRelasi(R, judul_buku, B, P, Pen->InfoPen.nama);
                         }else{
                             cout<<"Buku tidak ditemukan. Isi Data Buku tersebut untuk menyelesaikan proses\n";
-                            AdrBuku NewBuku = AllocateBuku();
+                            AdrBuku NewBuku = AllocateBuku(B);
                             InputBukukeList(B, NewBuku, R);
                             AddRelasi(R, NewBuku->InfoBuku.Judul, B, P, Pen->InfoPen.nama);
                         }
@@ -140,6 +140,7 @@ int main() {
                     cout << "3. Update Tahun Terbit" << endl;
                     cout << "4. Update Cetakan" << endl;
                     cout << "5. Update Editor" << endl;
+                    cout << "6. Tambah Data penulis Buku" << endl;
                     cout << "Pilih atribut yang akan diubah: ";
                     cin >> pilihan;
 
@@ -159,6 +160,9 @@ int main() {
                         case 5:
                             updateEditorBuku(B, ID);
                             break;
+                        case 6:
+                            TambahRelasiBuku(R, B, P);
+                            break;
                         default:
                             cout << "Pilihan atribut tidak valid." << endl;
                             break;
@@ -172,6 +176,7 @@ int main() {
                     cout << "1. Update Nama" << endl;
                     cout << "2. Update Asal" << endl;
                     cout << "3. Update Nama Pena" << endl;
+                    cout << "4. Tambah buku yang ditulis" <<endl;
                     cout << "Pilih atribut yang akan diubah: ";
                     cin >> pilihan;
 
@@ -184,6 +189,9 @@ int main() {
                             break;
                         case 3:
                             updateNamaPenaPenulis(P, ID);
+                            break;
+                        case 4:
+                            TambahRelasiPenulis(R, B, P);
                             break;
                         default:
                             cout << "Pilihan atribut tidak valid." << endl;
