@@ -2,6 +2,8 @@
 #define MLL_RELATION_H_INCLUDED
 
 #include <iostream>
+#include "MLL_parent.h"
+#include "MLL_child.h"
 using namespace std;
 
 typedef struct ElmRelasi *AdrRelasi;
@@ -22,5 +24,6 @@ void InsertRelasi(ListRelasi &R, AdrRelasi NewRelasi);
 void PrintBukuDanPenulis(ListRelasi R);
 void PrintBukuBasedPenulis(ListRelasi R, string NamaPenulis);
 void PrintPenulisOnBuku(ListRelasi R, string judulBuku);
+
 
 #endif // MLL_RELATION_H_INCLUDED
