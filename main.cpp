@@ -104,15 +104,25 @@ int main() {
                     int IDbuku;
                     cout<<"Masukkan ID Buku yang ingin dihapus: ";
                     cin>>IDbuku;
-                    HapusBukuPadaRelasi(B, R, IDbuku);
-                    HapusBuku(B, IDbuku);
+                    AdrBuku Check = FindBukuByID(B, IDbuku);
+                    if (Check != NULL){
+                        HapusBukuPadaRelasi(B, R, IDbuku);
+                        HapusBuku(B, IDbuku);
+                    }else{
+                        cout<<"Buku tidak ditemukan"<<endl;
+                    }
                     break;
                 }else if (P2 == 2){
                     int IDPen;
                     cout<<"Masukkan ID Penulis yang ingin dihapus: ";
                     cin>>IDPen;
-                    HapusPenulisPadaRelasi(P, R, IDPen);
-                    HapusPenulis(P, IDPen);
+                    AdrPenulis Check = FindPenulisByID(P, IDPen);
+                    if (Check != NULL){
+                        HapusPenulisPadaRelasi(P, R, IDPen);
+                        HapusPenulis(P, IDPen);
+                    }else{
+                        cout<<"Penulis Tidak Ditemukan"<<endl;
+                    }
                     break;
                 }else {
                     break;
@@ -207,6 +217,7 @@ int main() {
                         cout << "Pilihan kategori tidak valid." << endl;
                         break;
                 }
+                break;
             }
             case 4: {
                 int A4;
@@ -216,7 +227,7 @@ int main() {
                 cout << "---------------------------------------------"<<endl;
                 cout<<"1. Cari Penulis Berdasarkan Judul Buku"<<endl;
                 cout<<"2. Cari Buku Berdasarkan Nama Penulis"<<endl;
-                cout<<"3. Tampilkan Buku dan Penulis (Tanpa Urutan)"<<endl;
+                cout<<"3. Tampilkan Informasi Buku dan Penulis yang terdata"<<endl;
                 cout<<"4. Tampilkan Nama Penulis secara Ascending"<<endl;
                 cout<<"5. Tampilkan Nama Penulis secara Descending"<<endl;
                 cout<<"6. Tampilkan Penulis yang paling aktif maupun tidak aktif"<<endl;
