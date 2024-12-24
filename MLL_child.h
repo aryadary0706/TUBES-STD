@@ -31,7 +31,7 @@ struct ListBuku {
 };
 
 void createListBuku(ListBuku &B);
-AdrBuku AllocateBuku();
+AdrBuku AllocateBuku(ListBuku B);
 void insertFirstBuku(ListBuku &B, AdrBuku book);
 void InsertLastBuku(ListBuku &B, AdrBuku book);
 void InsertAfterBuku(ListBuku &B, AdrBuku prec, AdrBuku book);
@@ -43,5 +43,6 @@ void updateTahunTerbitBuku(ListBuku &B, int IDBuku);
 void updateCetakanBuku(ListBuku &B, int IDBuku);
 void updateEditorBuku(ListBuku &B, int IDBuku);
 void PrintListBuku(ListBuku B);
+AdrBuku FindBukuByID(ListBuku B, int ID);
 
 #endif // MLL_CHILD_H_INCLUDED
