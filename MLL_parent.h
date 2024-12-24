@@ -26,9 +26,12 @@ struct ListPenulis {
 };
 
 void createListPenulis(ListPenulis &P);
-AdrPenulis AllocatePenulis();
+AdrPenulis AllocatePenulis(ListPenulis P);
 void HapusPenulis(ListPenulis &P, int IDPenulis);
 void AddPenulis(ListPenulis &P);
+void InsertFirstPen(ListPenulis &P, AdrPenulis Pen);
+void InsertLastPen(ListPenulis &P, AdrPenulis Pen);
+void InsertAfterPen(ListPenulis &P, AdrPenulis previous, AdrPenulis Pen);
 AdrPenulis FindPenulisByName(ListPenulis P, string Nama);
 void TampilkanPenulisSelectionSortAscending(ListPenulis &P);
 void TampilkanPenulisInsertionSortDescending(ListPenulis &P);
@@ -36,5 +39,6 @@ void updateNamaPenulis(ListPenulis &P, int IDPenulis);
 void updateAsalPenulis(ListPenulis &P, int IDPenulis);
 void updateNamaPenaPenulis(ListPenulis &P, int IDPenulis);
 void PrintListPenulis(ListPenulis &P);
+AdrPenulis FindPenulisByID(ListPenulis P, int ID);
 
 #endif // MLL_PARENT_H_INCLUDED
