@@ -29,48 +29,7 @@ void InsertRelasi(ListRelasi &R, AdrRelasi NewRelasi){
     }
 }
 
-void PrintBukuDanPenulis(ListRelasi R){
-    /*
-    I.S Terdefinisi ListRelasi R
-    F.S Ditampilkan Seluruh Data dari Buku dan data penulis buku tersebut
-    */
 
-    AdrRelasi P = R.First;
-    AdrPenulis P_Penulis;
-    int count = 1;
-    AdrBuku P_Buku;
-    if (P != NULL) {
-        while (P != NULL){
-        P_Buku = P->BR;
-        P_Penulis = P->PR;
-        cout<<"==============================================="<<endl;
-        cout<<"-----------------------------------------------"<<endl;
-        cout<<"                   Tentang Buku"<<endl;
-        cout<<"----------------------------------------------"<<endl;
-        cout<<"ID BUKU: "<<P_Buku->InfoBuku.IDBuku<<endl;
-        cout<<"Judul Buku: "<<P_Buku->InfoBuku.Judul<<endl;
-        cout<<"Penerbit: "<<P_Buku->InfoBuku.Penerbit<<endl;
-        cout<<"Tahun terbit: "<<P_Buku->InfoBuku.Tahunterbit<<endl;
-        cout<<"Cetakan: "<<P_Buku->InfoBuku.Cetakan<<endl;
-        cout<<"Editor: "<<P_Buku->InfoBuku.Editor<<endl;
-        cout<<"-----------------------------------------------"<<endl;
-        cout<<"                   Tentang Penulis"<<endl;
-        cout<<"-----------------------------------------------"<<endl;
-        cout<<"ID penulis: "<<P_Penulis->InfoPen.IDPenulis<<endl;
-        cout<<"Nama Penulis: "<<P_Penulis->InfoPen.nama<<endl;
-        cout<<"Nama Pena: "<<P_Penulis->InfoPen.namaPena<<endl;
-        cout<<"Asal penulis:"<<P_Penulis->InfoPen.asal<<endl;
-        cout<<"==============================================="<<endl;
-        P = P->next;
-        count++;
-        }
-    }else{
-        cout<<"JUDUL BUKU TIDAK DITEMUKAN.\n";
-    }
-    if (count == 1){
-        cout<<"Belum Ada Buku yang terdaftar di perpustakaan"<<endl;
-    }
-}
 
 void PrintBukuBasedPenulis(ListRelasi R, string NamaPenulis){
     /*
@@ -84,8 +43,7 @@ void PrintBukuBasedPenulis(ListRelasi R, string NamaPenulis){
     while (R_pointer != NULL){
             if (R_pointer->PR->InfoPen.nama == NamaPenulis || R_pointer->PR->InfoPen.namaPena == NamaPenulis){
                BfromR = R_pointer->BR;
-               cout<<"==============================================="<<endl;
-               cout<<count;
+               cout<< count;
                cout<<"ID BUKU: "<<BfromR->InfoBuku.IDBuku<<endl;
                cout<<"Judul Buku: "<<BfromR->InfoBuku.Judul<<endl;
                cout<<"Penerbit: "<<BfromR->InfoBuku.Penerbit<<endl;
