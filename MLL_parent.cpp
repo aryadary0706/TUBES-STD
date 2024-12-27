@@ -119,6 +119,9 @@ void InsertAfterPen(ListPenulis &P, AdrPenulis prec, AdrPenulis Pen) {
     prec->next = Pen;
 }
 
+void InputPenuliskeList(ListPenulis &P, AdrPenulis Pen){
+    InsertFirstPen(P, Pen);
+}
 
 void TampilkanPenulisSelectionSortAscending(ListPenulis &P){
     /*
@@ -205,36 +208,6 @@ void TampilkanPenulisInsertionSortDescending(ListPenulis &P){
     }
 }
 
-void HapusPenulis(ListPenulis &P, int IDPenulis) {
-    AdrPenulis current = P.First; // Pointer to traverse the list
-    if (P.First == NULL){
-        cout<<"Tidak ada Penulis yang terdata"<<endl;
-    }
-    while (current != NULL) {
-        if (current == P.First){
-            if (P.First->next == NULL){
-                current = P.First;
-                P.First = NULL;
-            }else if (current->next == NULL){
-                AdrPenulis temp = P.First;
-                while (temp->next != current){
-                    temp = temp->next;
-                }
-                temp->next == NULL;
-            }else{
-                AdrPenulis temp = P.First;
-                while (temp->next != current){
-                    temp = temp->next;
-                }
-                current = temp->next;
-                temp->next = current->next;
-                current->next = NULL;
-            }
-        }
-        current = current->next; // Move to the next node
-    }
-}
-
 void updateNamaPenulis(ListPenulis &P, int IDPenulis) {
     AdrPenulis writer = P.First;
     while (writer != NULL && writer->InfoPen.IDPenulis != IDPenulis) {
@@ -285,7 +258,6 @@ void PrintListPenulis(ListPenulis &P){
         cout<<"==============================================="<<endl;
     }
     while (Pr != NULL){
-        cout<<"==============================================="<<endl;
         cout<<"ID Penulis: "<<Pr->InfoPen.IDPenulis<<endl;
         cout<<"Nama Penulis: "<<Pr->InfoPen.nama<<endl;
         cout<<"Nama Pena Penulis: "<<Pr->InfoPen.namaPena<<endl;
