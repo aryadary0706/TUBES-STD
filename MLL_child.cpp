@@ -71,7 +71,7 @@ AdrBuku AllocateBuku(ListBuku B){
 }
 
 void insertFirstBuku(ListBuku &B, AdrBuku book){
-    if (B.First == NULL) {
+    if (B.First == NULL && B.Last == NULL) {
         B.First = book;
         B.Last = book;
     } else {
@@ -82,12 +82,12 @@ void insertFirstBuku(ListBuku &B, AdrBuku book){
 }
 
 void InsertLastBuku(ListBuku &B, AdrBuku book){
-    if (B.Last == NULL) {
+    if (B.Last == NULL && B.First == NULL) {
         B.First = book;
         B.Last = book;
     } else {
-        book->prev = B.Last;
         B.Last->next = book;
+        book->prev = B.Last;
         B.Last = book;
     }
 }
@@ -109,6 +109,10 @@ void InsertAfterBuku(ListBuku &B, AdrBuku prec, AdrBuku book){
         prec->next->prev = book;
         prec->next = book;
     }
+}
+
+void InputBukukeList(ListBuku &B, AdrBuku book){
+    InsertLastBuku(B, book);
 }
 
 AdrBuku FindBukuByJudul(ListBuku B, string judul){
@@ -141,50 +145,6 @@ AdrBuku FindBukuByID(ListBuku B, int ID){
     return found;
 }
 
-void HapusBuku(ListBuku &B, int IDBuku) {
-    AdrBuku current = B.First;// Pointer to traverse the list
-    AdrBuku delNode;
-    if (B.First == NULL && B.Last == NULL){
-        cout<<"Tidak ada buku yang terdata dalam administrasi"<<endl;
-        return;
-    }
-    while (current != NULL) {
-        if (current->InfoBuku.IDBuku == IDBuku) {
-            if (current == B.First){
-                if (current->next == NULL){
-                    current = B.First;
-                    B.First = NULL;
-                    B.Last = NULL;
-                }else{
-                    current = B.First;
-                    B.First = current->next;
-                    current->next = NULL;
-                    B.First->prev = NULL;
-                }
-            }else if (current == B.Last){
-                if (B.Last->prev == NULL){
-                    current = B.Last;
-                    B.First = NULL;
-                    B.Last = NULL;
-                }else{
-                    current = B.Last;
-                    B.Last = current->prev;
-                    current->prev = NULL;
-                    B.Last->next = NULL;
-                }
-            }else{
-                AdrBuku temp = current;
-                temp = current->next;
-                current->next = temp->next;
-                if (temp->next != NULL){
-                    temp->next->prev = current;
-                }
-                temp = NULL;
-            }
-        }
-        current = current->next; // Move to the next node
-    }
-}
 
 void updateJudulBuku(ListBuku &B, int IDBuku) {
     AdrBuku book = B.First;
