@@ -15,7 +15,7 @@ void EvaluasiPenulis(ListPenulis P, ListRelasi R){
     Menampilkan data penulis yang paling aktif dan tidak dalam menulis buku
     */
     AdrPenulis q = P.First;
-    int maxBooks = 0, minBooks = 10;
+    int maxBooks = 0, minBooks = 100;
     AdrPenulis aktif = NULL, pasif = NULL;
 
     while (q != NULL) {
@@ -42,7 +42,7 @@ void EvaluasiPenulis(ListPenulis P, ListRelasi R){
     cout << "Penulis paling pasif: " << pasif->InfoPen.nama << " dengan " << minBooks << " buku.\n";
 }
 
-void AddRelasi(ListRelasi &R, string JudulBuku, ListBuku B, ListPenulis P, string NamaPenulis){
+void AddRelasi(ListRelasi &R, string JudulBuku, ListBuku &B, ListPenulis &P, string NamaPenulis){
     /*
     (I.S : Terdefinisi ListBuku P yang kosong, judulBuku dan NamaPenulis yang akan direlasikan, ListBuku B dan ListPenulis P
     proses : Mengalokasikan AdrPenulis Rel. Memasukan elemen dari Rel dengan fungsi FindBukuByJudul() dan FindPenulisByName(). Setelahnya, dilanjutkan proses Relasi() untuk memasukkan Rel ke dalam ListRelasi R
@@ -58,116 +58,122 @@ void AddRelasi(ListRelasi &R, string JudulBuku, ListBuku B, ListPenulis P, strin
         InsertRelasi(R, Rel);
         cout<<"Relasi antara Buku-Penulis Sudah Ditambahkan.\n";
     }else{
-        cout<<endl<<"Judul Buku atau Nama Penulis tidak ditemukan.\n"<<endl;
+        cout<<"Judul Buku atau Nama Penulis tidak ditemukan.\n"<<endl;
     }
 }
 
-void HapusBukuPadaRelasi(ListBuku &B, ListRelasi &R, int IDBuku) {
-    AdrRelasi RAB = R.First;
-    AdrRelasi p = NULL;
-    AdrRelasi del = NULL;
-    while (RAB != NULL) {
-        if (RAB->BR->InfoBuku.IDBuku == IDBuku) {
-            if (RAB == R.First) {
-                R.First = RAB->next;
-                del = RAB;
-                RAB = R.First;
-            } else {
-                p->next = RAB->next;
-                del = RAB;
-                RAB = p->next;
+void HapusBuku(ListBuku &B, ListRelasi &R, int IDBuku) {
+    AdrBuku buku = B.First;
+
+    while(buku != NULL && buku->InfoBuku.IDBuku != IDBuku){
+        buku = buku->next;
+    }
+
+    if (buku != NULL){
+        AdrRelasi relasi = R.First;
+        while (relasi != NULL){
+            if (relasi->BR == buku){
+                if (relasi == R.First){
+                    R.First = relasi->next;
+                }else{
+                    AdrRelasi q = R.First;
+                    while (q->next != relasi){
+                        q = q->next;
+                    }
+                    q->next = relasi->next;
+                }
+                relasi->BR = NULL;
             }
-        } else {
-            p = RAB;
-            RAB = RAB->next;
+            relasi = relasi->next;
         }
-    }
-}
-
-
-void HapusPenulisPadaRelasi(ListPenulis &P, ListRelasi &R, int IDPenulis) {
-    AdrRelasi RAP = R.First;
-    AdrRelasi p = NULL;
-    AdrRelasi del = NULL;
-    while (RAP != NULL) {
-        if (RAP->PR->InfoPen.IDPenulis == IDPenulis) {
-            if (RAP == R.First) {
-                R.First = RAP->next;
-                del = RAP;
-                RAP = R.First;
-            } else {
-                p->next = RAP->next;
-                del = RAP;
-                RAP = p->next;
-            }
-        } else {
-            p = RAP;
-            RAP = RAP->next;
+        if (buku == B.First && buku == B.Last){
+            B.First = NULL;
+            B.Last = NULL;
+        } else if (buku == B.First){
+            B.First = buku->next;
+            B.First->prev = NULL;
+        } else if (buku == B.Last){
+            B.Last = buku->prev;
+            B.Last->next = NULL;
+        }else{
+            buku->prev->next = buku->next;
+            buku->next->prev = buku->prev;
         }
-    }
-}
+        buku->next = NULL;
+        buku->prev = NULL;
 
-void InputBukukeList(ListBuku &B, AdrBuku book, ListRelasi &R){
-    int Idbook = book->InfoBuku.IDBuku;
-    if (B.First == NULL && B.Last == NULL) {
-        B.First = book;
-        B.Last = book;
-    }else if (B.First->InfoBuku.IDBuku < Idbook){
-        insertFirstBuku(B, book);
-    }else if (B.Last->InfoBuku.IDBuku > Idbook){
-        InsertLastBuku(B, book);
+        cout << "Buku dengan ID" << IDBuku << " berhasil dihapus.\n";
     }else{
-        AdrBuku pointer = B.First;
-        AdrBuku pointerNext = pointer->next;
-        while (pointer != NULL){
-            if (pointer->InfoBuku.IDBuku >= Idbook && pointerNext->InfoBuku.IDBuku <= Idbook){
-                InsertAfterBuku(B, pointer, book);
-                return;
+        cout << "Buku dengan ID" << IDBuku << " tidak ditemukan.\n";
+    }
+}
+
+
+void HapusPenulis(ListPenulis &P, ListRelasi &R, int IDPenulis) {
+    AdrPenulis q = NULL;
+    AdrPenulis p = P.First;
+
+    while (p != NULL && p->InfoPen.IDPenulis != IDPenulis) {
+        q = p;
+        p = p->next;
+    }
+
+    if (p != NULL) {
+        AdrRelasi relasi = R.First;
+        AdrRelasi rPrec = NULL;
+
+        while (relasi != NULL) {
+            if (relasi->PR == p) {
+                if (rPrec == NULL) {
+                    R.First = relasi->next;
+                } else {
+                    rPrec->next = relasi->next;
+                }
+                relasi->PR = NULL;
+                relasi = relasi->next;
+            } else {
+                rPrec = relasi;
+                relasi = relasi->next;
             }
-            pointer = pointer->next;
         }
-    }
-}
 
-void InputPenuliskeList(ListPenulis &P, AdrPenulis Pen, ListRelasi &R){
-    int Idpen = Pen->InfoPen.IDPenulis;
-    if (P.First == NULL) {
-        P.First = Pen;
-    } else if (P.First->InfoPen.IDPenulis > Idpen) {
-        InsertFirstPen(P, Pen);
-    } else {
-        AdrPenulis pointer = P.First;
-        AdrPenulis previous = NULL;
-        while (pointer != NULL && pointer->InfoPen.IDPenulis < Idpen) {
-            previous = pointer;
-            pointer = pointer->next;
-        }
-        if (previous == NULL) {
-            InsertFirstPen(P, Pen);
-        } else if (pointer == NULL) {
-            InsertLastPen(P, Pen);
+        if (q == NULL) {
+            P.First = p->next;
         } else {
-            InsertAfterPen(P, previous, Pen);
+            q->next = p->next;
         }
+
+        p->next = NULL;
+        cout << "Penulis dengan ID " << IDPenulis << " berhasil dihapus.\n";
+    } else {
+        cout << "Penulis dengan ID " << IDPenulis << " tidak ditemukan.\n";
     }
 }
 
-void TambahRelasiPenulis(ListRelasi &R, ListBuku B, ListPenulis P){
-    string JudulBuku, NamaPen;
-    cout<< "Nama Penulis yang ingin di-update: ";
-    cin>> NamaPen;
-    cout<<endl;
-    cout<< "Judul Buku yang ingin ditambahkan: ";
-    cin>> JudulBuku;
-    AddRelasi(R, JudulBuku, B, P, NamaPen);
-}
 
-void TambahRelasiBuku(ListRelasi &R,ListBuku B,ListPenulis P){
-    string JudulBuku, NamaPen;
-    cout<< "Judul buku yang ingin di-update: ";
-    cin>> JudulBuku;
-    cout<<endl;
-    cout<< "Nama Penulis yang ingin ditambahkan: ";
-    cin>> NamaPen;
-   AddRelasi(R, JudulBuku, B, P, NamaPen);
+void PrintBukuDanPenulis(ListPenulis P, ListRelasi R){
+    /*
+    I.S Terdefinisi ListPenulis P dan ListRelasi R
+    F.S Ditampilkan Seluruh penulis beserta bukunya
+    */
+
+    AdrPenulis penulis = P.First;
+    while (penulis != NULL) {
+        cout << "ID Penulis: " << penulis->InfoPen.IDPenulis << endl;
+        cout << "Nama Penulis: " << penulis->InfoPen.nama << endl;
+        cout << "Nama Pena: " << penulis ->InfoPen.namaPena << endl;
+        cout << "Asal Kota Penulis: " << penulis->InfoPen.asal << endl;
+        cout << "Buku yang Ditulis:\n";
+
+        AdrRelasi relasi = R.First;
+        while (relasi != NULL){
+            if (relasi->PR == penulis){
+                cout << "- " << relasi->BR->InfoBuku.Judul << " terbit tahun " << relasi->BR->InfoBuku.Tahunterbit << endl;
+            }
+            relasi = relasi->next;
+        }
+        cout<<"===============================================\n";
+        penulis = penulis->next;
+    }
+
 }
