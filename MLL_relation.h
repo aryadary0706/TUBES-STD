@@ -21,7 +21,6 @@ struct ListRelasi {
 };
 void createListRelasi(ListRelasi &R);
 void InsertRelasi(ListRelasi &R, AdrRelasi NewRelasi);
-void PrintBukuDanPenulis(ListRelasi R);
 void PrintBukuBasedPenulis(ListRelasi R, string NamaPenulis);
 void PrintPenulisOnBuku(ListRelasi R, string judulBuku);
 
