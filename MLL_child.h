@@ -35,7 +35,7 @@ AdrBuku AllocateBuku(ListBuku B);
 void insertFirstBuku(ListBuku &B, AdrBuku book);
 void InsertLastBuku(ListBuku &B, AdrBuku book);
 void InsertAfterBuku(ListBuku &B, AdrBuku prec, AdrBuku book);
-void HapusBuku(ListBuku &B, int IDBuku);
+void InputBukukeList(ListBuku &B, AdrBuku book);
 AdrBuku FindBukuByJudul(ListBuku B, string judul);
 void updateJudulBuku(ListBuku &B, int IDBuku);
 void updatePenerbitBuku(ListBuku &B, int IDBuku);
