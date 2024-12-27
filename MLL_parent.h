@@ -27,8 +27,7 @@ struct ListPenulis {
 
 void createListPenulis(ListPenulis &P);
 AdrPenulis AllocatePenulis(ListPenulis P);
-void HapusPenulis(ListPenulis &P, int IDPenulis);
-void AddPenulis(ListPenulis &P);
+void InputPenuliskeList(ListPenulis &P, AdrPenulis Pen);
 void InsertFirstPen(ListPenulis &P, AdrPenulis Pen);
 void InsertLastPen(ListPenulis &P, AdrPenulis Pen);
 void InsertAfterPen(ListPenulis &P, AdrPenulis previous, AdrPenulis Pen);
