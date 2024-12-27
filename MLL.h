@@ -3,15 +3,12 @@
 
 #include "MLL_child.h"
 #include "MLL_parent.h"
-#include "relation.h"
+#include "MLL_relation.h"
 
 void EvaluasiPenulis(ListPenulis P, ListRelasi R);
-void AddRelasi(ListRelasi &R, string JudulBuku, ListBuku B, ListPenulis P, string NamaPenulis);
-void HapusPenulisPadaRelasi(ListPenulis &P, ListRelasi &R, int IDPenulis);
-void HapusBukuPadaRelasi(ListBuku &B, ListRelasi &R, int IDBuku);
-void InputBukukeList(ListBuku &B, AdrBuku book, ListRelasi &R);
-void InputPenuliskeList(ListPenulis &P, AdrPenulis Pen, ListRelasi &R);
-void TambahRelasiPenulis(ListRelasi &R, ListBuku B, ListPenulis P);
-void TambahRelasiBuku(ListRelasi &R,ListBuku B,ListPenulis P);
+void AddRelasi(ListRelasi &R, string JudulBuku, ListBuku &B, ListPenulis &P, string NamaPenulis);
+void HapusPenulis(ListPenulis &P, ListRelasi &R, int IDPenulis);
+void HapusBuku(ListBuku &B, ListRelasi &R, int IDBuku);
+void PrintBukuDanPenulis(ListPenulis P, ListRelasi R);
 
 #endif // MLL_H_INCLUDED
