@@ -225,9 +225,7 @@ void PrintListBuku(ListBuku B){
         cout<<"==============================================="<<endl;
     }
     while (Br != NULL){
-        cout<<"==============================================="<<endl;
         cout<<"Judul Buku: "<<Br->InfoBuku.Judul<<endl;
-        cout<<"==============================================="<<endl;
         cout<<"ID Buku: "<<Br->InfoBuku.IDBuku<<endl;
         cout<<"Nama Penerbit: "<<Br->InfoBuku.Penerbit<<endl;
         cout<<"Tahun Terbit: "<<Br->InfoBuku.Tahunterbit<<endl;
