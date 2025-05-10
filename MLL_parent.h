@@ -1,0 +1,43 @@
+#ifndef MLL_PARENT_H_INCLUDED
+#define MLL_PARENT_H_INCLUDED
+
+#include <iostream>
+using namespace std;
+
+struct Penulis{
+    int IDPenulis; // ID yang dimiliki Penulis yang ada dalam list
+    string nama;
+    string asal;
+    string namaPena; //opsional. Jika penulis tidak ada nama pena. Maka ditulis '-'
+};
+
+typedef struct ElmPenulis *AdrPenulis;
+
+//ElmPenulis bersifat single linked list
+struct ElmPenulis {
+    Penulis InfoPen; //Informasi Penulis
+    AdrPenulis next;
+};
+
+
+//List bersifat single linked list
+struct ListPenulis {
+    AdrPenulis First;
+};
+
+void createListPenulis(ListPenulis &P);
+AdrPenulis AllocatePenulis(ListPenulis P);
+void InputPenuliskeList(ListPenulis &P, AdrPenulis Pen);
+void InsertFirstPen(ListPenulis &P, AdrPenulis Pen);
+void InsertLastPen(ListPenulis &P, AdrPenulis Pen);
+void InsertAfterPen(ListPenulis &P, AdrPenulis previous, AdrPenulis Pen);
+AdrPenulis FindPenulisByName(ListPenulis P, string Nama);
+void TampilkanPenulisSelectionSortAscending(ListPenulis &P);
+void TampilkanPenulisInsertionSortDescending(ListPenulis &P);
+void updateNamaPenulis(ListPenulis &P, int IDPenulis);
+void updateAsalPenulis(ListPenulis &P, int IDPenulis);
+void updateNamaPenaPenulis(ListPenulis &P, int IDPenulis);
+void PrintListPenulis(ListPenulis &P);
+AdrPenulis FindPenulisByID(ListPenulis P, int ID);
+
+#endif // MLL_PARENT_H_INCLUDED

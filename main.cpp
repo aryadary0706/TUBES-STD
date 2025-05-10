@@ -1,0 +1,296 @@
+#include "MLL.h"
+using namespace std;
+
+int main() {
+    ListBuku B;
+    ListPenulis P;
+    ListRelasi R;
+
+    createListBuku(B);
+    createListPenulis(P);
+    createListRelasi(R);
+
+    int pilihan = 0; // Inisialisasi pilihan
+    do {
+        cout << "---------------------------------------------"<<endl;
+        cout<<"                MENU PROGRAM"<<endl;
+        cout << "---------------------------------------------"<<endl;
+        cout << "1. Masukkan Data ( BUKU / PENULIS )\n";
+        cout << "2. Hapus Data ( BUKU / PENULIS )\n";
+        cout << "3. Ubah/Rekayasa Data ( BUKU / PENULIS )\n";
+        cout << "4. Tampilkan Data ( BUKU / PENULIS )\n";
+        cout << "5. KELUAR\n";
+        cout << "Masukkan pilihan: "; // Tambahkan prompt untuk input
+        cin >> pilihan; // Ambil input dari pengguna
+
+        switch (pilihan) {
+            case 1: {
+                int P1;
+                cout << "---------------------------------------------"<<endl;
+                cout << "                INPUT DATA"<<endl;
+                cout << "---------------------------------------------"<<endl;
+                cout << "Data apa yang ingin dimasukkan?\n";
+                cout << "1. Buku\n";
+                cout << "2. Penulis\n";
+                cout << "3. Keluar\n";
+                cout << "Masukkan pilihan: ";
+                cin >> P1;
+                cout<<endl;
+
+                if (P1 == 1) {
+                    AdrBuku book;
+                    book = AllocateBuku(B);
+                    InputBukukeList(B, book);
+                    cout<<"Apakah kamu ingin menambah data penulis dari buku? [Y/N]\n"; //Untuk nambah data relasi secara langsung
+                    char A1;
+                    cin>>A1;
+                    cout<<endl;
+                    if (A1 == 'Y' || A1 == 'y'){
+                        string Nama_Pen;
+                        cout<<"Masukkan nama penulis buku yang menulis "<<book->InfoBuku.Judul<<": ";
+                        cin>>Nama_Pen;
+                        AdrPenulis AP = FindPenulisByName(P, Nama_Pen);
+                        if (AP != NULL){
+                            AddRelasi(R, book->InfoBuku.Judul, B, P, Nama_Pen);
+                        }else{
+                            cout<<"Penulis tidak ditemukan. Isi Data Penulis tersebut untuk menyelesaikan proses\n";
+                            cout<<endl;
+                            AdrPenulis NewPenulis = AllocatePenulis(P);
+                            InputPenuliskeList(P, NewPenulis);
+                            AddRelasi(R, book->InfoBuku.Judul, B, P, NewPenulis->InfoPen.nama);
+                        }
+                    }else{
+                        break;
+                    }
+                } else if (P1 == 2) {
+                    AdrPenulis Pen;
+                    Pen = AllocatePenulis(P);
+                    InputPenuliskeList(P, Pen);
+                    cout<<"Apakah kamu ingin menambah data Buku dari Penulis?[Y/N]\n"; //Untuk nambah data relasi secara langsung
+                    char A2;
+                    cin>>A2;
+                    if (A2 == 'Y' || A2 == 'y'){
+                        string judul_buku;
+                        cout<<"Masukkan nama judul buku yang ditulis "<<Pen->InfoPen.nama<<": ";
+                        cin>>judul_buku;
+                        AdrBuku AB = FindBukuByJudul(B, judul_buku);
+                        if (AB != NULL){
+                            AddRelasi(R, judul_buku, B, P, Pen->InfoPen.nama);
+                        }else{
+                            cout<<"Buku tidak ditemukan. Isi Data Buku tersebut untuk menyelesaikan proses\n";
+                            AdrBuku NewBuku = AllocateBuku(B);
+                            InputBukukeList(B, NewBuku);
+                            AddRelasi(R, NewBuku->InfoBuku.Judul, B, P, Pen->InfoPen.nama);
+                        }
+                    }else{
+                        break;
+                    }
+                } else {
+                    break; // Keluar dari sub-menu
+                }
+                break; // Tambahkan break untuk case 1
+            }
+            case 2: {
+                // Implementasi untuk menghapus data (BUKU / PENULIS) harus ditambahkan di sini
+                int P2;
+                cout << "---------------------------------------------"<<endl;
+                cout << "                  DELETE DATA"<<endl;
+                cout << "---------------------------------------------"<<endl;
+                cout<<"Data apa yang ingin dihapus:\n";
+                cout<<"1. BUKU\n";
+                cout<<"2. PENULIS\n";
+                cin>>P2;
+                if (P2 == 1){
+                    int IDbuku;
+                    cout << "Masukkan ID Buku yang ingin dihapus: ";
+                    cin >> IDbuku;
+                    HapusBuku(B, R, IDbuku);
+                    break;
+                }else if (P2 == 2){
+                    int IDPen;
+                    cout<<"Masukkan ID Penulis yang ingin dihapus: ";
+                    cin>>IDPen;
+                    HapusPenulis(P, R, IDPen);
+                    break;
+                }else {
+                    break;
+                }
+            }
+            case 3: {
+                string Nama_Pen, judul_buku;
+                int ID;
+                cout << "---------------------------------------------"<<endl;
+                cout << "                  EDIT DATA"<<endl;
+                cout << "---------------------------------------------"<<endl;
+                cout << "1. Update Data Buku" << endl;
+                cout << "2. Update Data Penulis" << endl;
+                cout << "0. Keluar" << endl;
+                cout << "Pilih kategori: ";
+                cin >> pilihan;
+
+                switch (pilihan) {
+                    case 1: // Update Data Buku
+                    cout << "\n=== Update Data Buku ===" << endl;
+                    cout << "1. Update Judul" << endl;
+                    cout << "2. Update Penerbit" << endl;
+                    cout << "3. Update Tahun Terbit" << endl;
+                    cout << "4. Update Cetakan" << endl;
+                    cout << "5. Update Editor" << endl;
+                    cout << "6. Tambah Data penulis Buku" << endl;
+                    cout << "Pilih atribut yang akan diubah: ";
+                    cin >> pilihan;
+
+                    switch (pilihan) {
+                        case 1:
+                            cout << "Masukkan ID Buku: ";
+                            cin >> ID;
+                            updateJudulBuku(B, ID);
+                            break;
+                        case 2:
+                            cout << "Masukkan ID Buku: ";
+                            cin >> ID;
+                            updatePenerbitBuku(B, ID);
+                            break;
+                        case 3:
+                            cout << "Masukkan ID Buku: ";
+                            cin >> ID;
+                            updateTahunTerbitBuku(B, ID);
+                            break;
+                        case 4:
+                            cout << "Masukkan ID Buku: ";
+                            cin >> ID;
+                            updateCetakanBuku(B, ID);
+                            break;
+                        case 5:
+                            cout << "Masukkan ID Buku: ";
+                            cin >> ID;
+                            updateEditorBuku(B, ID);
+                            break;
+                        case 6:
+                            cout<< "Judul buku yang ingin di-update: ";
+                            cin>> judul_buku;
+                            cout<<endl;
+                            cout<< "Nama Penulis yang ingin ditambahkan: ";
+                            cin>> Nama_Pen;
+                            AddRelasi(R, judul_buku, B, P, Nama_Pen);
+                            break;
+                        default:
+                            cout << "Pilihan atribut tidak valid." << endl;
+                            break;
+                    }
+                    break;
+
+                    case 2: // Update Data Penulis
+                    cout << "\n=== Update Data Penulis ===" << endl;
+                    cout << "1. Update Nama" << endl;
+                    cout << "2. Update Asal" << endl;
+                    cout << "3. Update Nama Pena" << endl;
+                    cout << "4. Tambah buku yang ditulis" <<endl;
+                    cout << "Pilih atribut yang akan diubah: ";
+                    cin >> pilihan;
+
+                    switch (pilihan) {
+                        case 1:
+                            cout << "Masukkan ID Buku: ";
+                            cin >> ID;
+                            updateNamaPenulis(P, ID);
+                            break;
+                        case 2:
+                            cout << "Masukkan ID Buku: ";
+                            cin >> ID;
+                            updateAsalPenulis(P, ID);
+                            break;
+                        case 3:
+                            cout << "Masukkan ID Buku: ";
+                            cin >> ID;
+                            updateNamaPenaPenulis(P, ID);
+                            break;
+                        case 4:
+                            cout<< "Nama Penulis yang ingin di-update: ";
+                            cin>> Nama_Pen;
+                            cout<<endl;
+                            cout<< "Judul Buku yang ingin ditambahkan: ";
+                            cin>> judul_buku;
+                            AddRelasi(R, judul_buku, B, P, Nama_Pen);
+                            break;
+                        default:
+                            cout << "Pilihan atribut tidak valid." << endl;
+                            break;
+                    }
+                    break;
+
+                    case 0: // Keluar
+                        cout << "Keluar dari menu update data." << endl;
+                        break;
+
+                    default:
+                        cout << "Pilihan kategori tidak valid." << endl;
+                        break;
+                }
+                break;
+            }
+            case 4: {
+                int A4;
+                // Implementasi untuk menampilkan data (BUKU / PENULIS) harus ditambahkan di sini
+                cout << "---------------------------------------------"<<endl;
+                cout << "                  SHOW DATA"<<endl;
+                cout << "---------------------------------------------"<<endl;
+                cout<<"1. Cari Penulis Berdasarkan Judul Buku"<<endl;
+                cout<<"2. Cari Buku Berdasarkan Nama Penulis"<<endl;
+                cout<<"3. Tampilkan Informasi Buku dan Penulis yang terdata"<<endl;
+                cout<<"4. Tampilkan Nama Penulis secara Ascending"<<endl;
+                cout<<"5. Tampilkan Nama Penulis secara Descending"<<endl;
+                cout<<"6. Tampilkan Penulis yang paling aktif maupun tidak aktif"<<endl;
+                cout<<"7. Tampilkan Daftar Buku"<<endl;
+                cout<<"8. Tampilkan Daftar Penulis"<<endl;
+                cout<<"9. Keluar\n";
+                cout<<"Masukkan Pilihan Anda: \n";
+                cin>>A4;
+                if (A4 == 1){
+                    string JudulDicari;
+                    cout<<"Masukkan Nama Judul Buku yang dicari: "<<endl;
+                    cin>>JudulDicari;
+                    PrintPenulisOnBuku(R, JudulDicari);
+                    break;
+                }else if (A4 == 2){
+                    string NamaDicari;
+                    cout<<"Masukkan Nama Penulis yang dicari: "<<endl;
+                    cin>>NamaDicari;
+                    PrintBukuBasedPenulis(R, NamaDicari);
+                    break;
+                }else if (A4 == 3){
+                    PrintBukuDanPenulis(P, R);
+                    break;
+                }else if (A4 == 4){
+                    TampilkanPenulisSelectionSortAscending(P);
+                    break;
+                }else if (A4 == 5){
+                    TampilkanPenulisInsertionSortDescending(P);
+                    break;
+                }else if (A4 == 6){
+                    EvaluasiPenulis(P, R);
+                    break;
+                }else if (A4 == 7){
+                    PrintListBuku(B);
+                    break;
+                }else if (A4 == 8){
+                    PrintListPenulis(P);
+                    break;
+                }else if (A4 == 9){
+                    break;
+                }
+            }
+            case 5: {
+                cout << "Keluar dari program.\n";
+                break; // Tambahkan break untuk case 5
+            }
+            default: {
+                cout << "Pilihan tidak valid. Silakan coba lagi.\n";
+                break; // Tambahkan break untuk default case
+            }
+        }
+
+    } while (pilihan != 5);
+
+    return 0; // Tambahkan return statement
+}
